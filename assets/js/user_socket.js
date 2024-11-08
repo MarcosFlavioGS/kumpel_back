@@ -71,7 +71,7 @@ channel.on("new_message", payload => {
   let messageItem = document.createElement("p")
   messageItem.innerText = `[${Date()}] ${payload.body}`
   messagesContainer.appendChild(messageItem)
-  console.log(messagesContainer.children.item(0))
+  console.log(messagesContainer.children.item(1))
 })
 
 channel.join()
