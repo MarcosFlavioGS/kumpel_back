@@ -1,8 +1,27 @@
 defmodule KumpelBackWeb.ChatRoomChannel do
+  @moduledoc """
+    This is the module responsable for the chat_room:* channel.
+  """
+
   use KumpelBackWeb, :channel
 
+  @doc """
+    This is the join function to the main room called lobby. It is free for all and does not need authentication.
+  """
   @impl true
   def join("chat_room:lobby", payload, socket) do
+    if authorized?(payload) do
+      {:ok, socket}
+    else
+      {:error, %{reason: "unauthorized"}}
+    end
+  end
+
+  @doc """
+    This endpoint checks for an existing room on the DB and return the socket if the provided code is valid.
+  """
+  @impl true
+  def join("chat_room:" <> room_id, payload, socket) do
     if authorized?(payload) do
       {:ok, socket}
     else

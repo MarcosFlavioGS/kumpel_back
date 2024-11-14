@@ -5,7 +5,7 @@ defmodule KumpelBack.MixProject do
     [
       app: :kumpel_back,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17.3",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -32,7 +32,7 @@ defmodule KumpelBack.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:elixir_sense, "~> 1.0.0", only: [:dev]},
+      {:elixir_sense, "~> 1.0.0"},
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
@@ -41,7 +41,7 @@ defmodule KumpelBack.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # TODO bump on release to {:phoenix_live_view, "~> 1.0.0"},
       {:phoenix_live_view, "~> 1.0.0-rc.1", override: true},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, ">= 0.30.0"},
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
