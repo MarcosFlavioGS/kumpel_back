@@ -24,6 +24,8 @@ defmodule KumpelBackWeb.Router do
     pipe_through :api
 
     get "/health", Health.HealthController, :index
+
+    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show]
   end
 
   # Other scopes may use custom stacks.
