@@ -15,4 +15,11 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
       data: room
     }
   end
+
+  def get(%{room: room}) do
+    %{
+      id: room.id,
+      data: room
+    }
+  end
 end
