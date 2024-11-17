@@ -4,7 +4,7 @@ defmodule KumpelBack.Repo.Migrations.RoomsMigration do
   def change do
     create table("Rooms") do
       add :name, :string
-      add :code_hash, :string
+      add :code, :string
       add :adm, :string
 
       timestamps()

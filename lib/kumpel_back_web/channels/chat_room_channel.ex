@@ -4,16 +4,17 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   """
 
   use KumpelBackWeb, :channel
+  alias KumpelBack.Rooms.Authorize
 
   @doc """
     This is the join function to the main room called lobby. It is free for all and does not need authentication.
   """
   @impl true
   def join("chat_room:lobby", payload, socket) do
-    if authorized?(payload) do
+    with {:ok, _message} <- Authorize.authorized("lobby") do
       {:ok, socket}
     else
-      {:error, %{reason: "unauthorized"}}
+      {:error, message} -> {:error, %{reason: message}}
     end
   end
 
@@ -22,10 +23,12 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   """
   @impl true
   def join("chat_room:" <> room_id, payload, socket) do
-    if authorized?(payload) do
+    with {:ok, _message} <- Authorize.authorized(room_id, payload) do
       {:ok, socket}
     else
-      {:error, %{reason: "unauthorized"}}
+      {:error, message} ->
+        IO.puts(message)
+        {:error, %{reason: message}}
     end
   end
 
@@ -47,10 +50,5 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   def handle_in("new_message", %{"body" => body, "user" => user}, socket) do
     broadcast!(socket, "new_message", %{body: body, user: user})
     {:noreply, socket}
-  end
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
   end
 end
