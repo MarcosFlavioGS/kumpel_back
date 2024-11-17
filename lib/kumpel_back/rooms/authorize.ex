@@ -1,4 +1,8 @@
 defmodule KumpelBack.Rooms.Authorize do
+	@moduledoc """
+		Module responsable to authorize channel connections
+	"""
+
   alias KumpelBack.Rooms
   alias Rooms.Room
 
