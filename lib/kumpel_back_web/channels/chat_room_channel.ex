@@ -32,6 +32,9 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     end
   end
 
+  @doc """
+    Ping handle_in
+  """
   @impl true
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}
