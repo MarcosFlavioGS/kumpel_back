@@ -7,12 +7,12 @@ defmodule KumpelBack.Rooms.Authorize do
   alias Rooms.Room
 
   def authorized(room_id, %{"code" => code}) do
-	with {:ok, %Room{code: room_code}} <- Rooms.get(room_id), true <- room_code == code do
-      {:ok, "Welcome to chat"}
-	else
-	  false -> {:error, "Invalid code"}
-  	_ -> {:error, "Room not found"}
-	end
+		with {:ok, %Room{code: room_code}} <- Rooms.get(room_id), true <- room_code == code do
+			{:ok, "Welcome to chat"}
+		else
+			false -> {:error, "Invalid code"}
+  		_ -> {:error, "Room not found"}
+		end
   end
 
   def authorized(_room_id, %{}), do: {:error, "Invalid or empty code"}
