@@ -5,6 +5,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
 
   use KumpelBackWeb, :channel
   alias KumpelBack.Rooms.Authorize
+  alias KumpelBack.Rooms.GetInfo
 
   @doc """
     This is the join function to the main room called lobby. It is free for all and does not need authentication.
@@ -33,11 +34,15 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   end
 
   @doc """
-    Ping handle_in
+    Ping handle_in.
+
+    Send info about the channel
   """
   @impl true
   def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+    with {:ok, room_id} <- GetInfo.get(payload) do
+      {:reply, {:ok, room_id}, socket}
+    end
   end
 
   @doc """

@@ -11,7 +11,8 @@ defmodule KumpelBack.Rooms.Authorize do
 			{:ok, "Welcome to chat"}
 		else
 			false -> {:error, "Invalid code"}
-  		_ -> {:error, "Room not found"}
+			{:error, :not_found} -> {:error, "Room not found"}
+  		_ -> {:error, "Some error"}
 		end
   end
 
