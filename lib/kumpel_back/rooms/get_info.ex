@@ -1,5 +1,7 @@
 defmodule KumpelBack.Rooms.GetInfo do
-  @moduledoc false
+  @moduledoc """
+  Gets info about a chat room and sends it back
+  """
 
   alias KumpelBack.Rooms
   alias Rooms.Room
