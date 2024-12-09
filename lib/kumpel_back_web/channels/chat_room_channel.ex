@@ -57,8 +57,8 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   @doc """
     Handles new messages
   """
-  def handle_in("new_message", %{"body" => body, "user" => user}, socket) do
-    broadcast!(socket, "new_message", %{body: body, user: user})
+  def handle_in("new_message", %{"body" => body, "user" => user, "color" => color}, socket) do
+    broadcast!(socket, "new_message", %{body: body, user: user, color: color})
     {:noreply, socket}
   end
 end
