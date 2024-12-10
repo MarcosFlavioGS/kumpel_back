@@ -6,7 +6,8 @@ jobs:
     services:
       db:
         image: postgres:latest
-        ports: ['5432:5432']
+        ports:
+          - '5432:5432'
         env:
           POSTGRES_PASSWORD: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -18,5 +19,5 @@ jobs:
           elixir-version: '1.17.3'
       - run: mix deps.get
       - run: mix test
-	  - run: mix credo --strict
-	  - run: mix format --check-formatted
+      - run: mix credo --strict
+      - run: mix format --check-formatted
