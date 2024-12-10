@@ -13,13 +13,13 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   """
   def create conn, params do
     with {:ok, %Room{} = room} <- Rooms.create(params) do
-    	conn
+      conn
       |> put_status(:created)
       |> render(:create, room: room)
     end
   end
 
-  def show conn, %{"id" => id} do
+  def show(conn, %{"id" => id}) do
     with {:ok, %Room{} = room} <- Rooms.get(id) do
       conn
       |> put_status(:ok)
@@ -27,13 +27,13 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
     end
   end
 
-  def update conn, _params do
+  def update(conn, _params) do
     # TODO: Updates a chat room
     conn
     |> put_status(:ok)
   end
 
-  def delete conn, _params do
+  def delete(conn, _params) do
     # TODO: Deletes a chat room
     conn
     |> put_status(:ok)
