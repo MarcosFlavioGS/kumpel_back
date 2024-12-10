@@ -1,4 +1,6 @@
 defmodule KumpelBackWeb.Rooms.RoomsController do
+  @moduledoc false
+
   use KumpelBackWeb, :controller
 
   alias KumpelBack.Rooms
