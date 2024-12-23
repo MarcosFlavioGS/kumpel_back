@@ -38,4 +38,12 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
     conn
     |> put_status(:ok)
   end
+
+  def list(conn, %{}) do
+    with {:ok, [%Room{} | _] = rooms} <- Rooms.list() do
+      conn
+      |> put_status(:ok)
+      |> render(:get, rooms: rooms)
+    end
+  end
 end

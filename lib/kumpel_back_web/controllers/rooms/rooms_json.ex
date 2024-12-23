@@ -16,10 +16,24 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
     }
   end
 
+  @doc """
+  get/1
+  Renders a single Room
+  """
   def get(%{room: room}) do
     %{
       id: room.id,
       data: room
+    }
+  end
+
+  @doc """
+  get/1
+  renders multiple Rooms
+  """
+  def get(%{rooms: rooms}) do
+    %{
+      rooms: rooms
     }
   end
 end

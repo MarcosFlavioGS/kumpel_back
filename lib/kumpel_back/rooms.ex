@@ -4,7 +4,9 @@ defmodule KumpelBack.Rooms do
   """
   alias KumpelBack.Rooms.Create
   alias KumpelBack.Rooms.Get
+  alias KumpelBack.Rooms.List
 
   defdelegate create(params), to: Create, as: :call
   defdelegate get(params), to: Get, as: :call
+  defdelegate list(), to: List, as: :call
 end

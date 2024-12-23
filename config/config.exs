@@ -14,7 +14,11 @@ config :kumpel_back,
 # Configures the endpoint
 config :kumpel_back, KumpelBackWeb.Endpoint,
   url: [host: "localhost"],
-  check_origin: ["https://your-app.fly.dev", "http://localhost:3000", "https://kumpel-chat.vercel.app"],
+  check_origin: [
+    "https://your-app.fly.dev",
+    "http://localhost:3000",
+    "https://kumpel-chat.vercel.app"
+  ],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: KumpelBackWeb.ErrorHTML, json: KumpelBackWeb.ErrorJSON],
