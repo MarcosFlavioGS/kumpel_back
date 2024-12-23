@@ -1,4 +1,6 @@
 defmodule KumpelBack.Rooms.Create do
+  @moduledoc false
+
   alias KumpelBack.Rooms.Room
   alias KumpelBack.Repo
 

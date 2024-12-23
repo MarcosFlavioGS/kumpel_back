@@ -12,9 +12,8 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   """
   @impl true
   def join("chat_room:lobby", payload, socket) do
-    with {:ok, _message} <- Authorize.authorized("lobby") do
-      {:ok, socket}
-    else
+    case Authorize.authorized("lobby") do
+      {:ok, _message} -> {:ok, socket}
       {:error, message} -> {:error, %{reason: message}}
     end
   end
@@ -24,9 +23,10 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   """
   @impl true
   def join("chat_room:" <> room_id, payload, socket) do
-    with {:ok, _message} <- Authorize.authorized(room_id, payload) do
-      {:ok, socket}
-    else
+    case Authorize.authorized(room_id, payload) do
+      {:ok, _message} ->
+        {:ok, socket}
+
       {:error, message} ->
         IO.puts(message)
         {:error, %{reason: message}}

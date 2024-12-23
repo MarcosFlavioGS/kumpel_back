@@ -7,9 +7,8 @@ defmodule KumpelBack.Rooms.GetInfo do
   alias Rooms.Room
 
   def get(%{"id" => id} = payload) do
-    with {:ok, %Room{name: room_name}} <- Rooms.get(id) do
-      {:ok, room_name}
-    else
+    case Rooms.get(id) do
+      {:ok, %Room{name: room_name}} -> {:ok, room_name}
       {:error, :not_found} -> {:error, "Room not found"}
       _ -> {:error, "Some error"}
     end
