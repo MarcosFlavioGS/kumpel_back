@@ -1,5 +1,7 @@
 defmodule KumpelBack.Rooms.Room do
-  @moduledoc false
+  @moduledoc """
+  	Module that contains Room schema
+  """
 
   use Ecto.Schema
   import Ecto.Changeset

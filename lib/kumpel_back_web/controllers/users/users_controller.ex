@@ -1,5 +1,7 @@
 defmodule KumpelBackWeb.Users.UsersController do
-  @moduledoc false
+  @moduledoc """
+  	Module for users controller
+  """
 
   use KumpelBackWeb, :controller
 
@@ -8,6 +10,9 @@ defmodule KumpelBackWeb.Users.UsersController do
 
   action_fallback KumpelBackWeb.Rooms.FallbackController
 
+  @doc """
+  	Creates a user
+  """
   def create(conn, params) do
    with {:ok, %User{} = user} <- Users.create(params) do
 	 conn
@@ -16,16 +21,22 @@ defmodule KumpelBackWeb.Users.UsersController do
    end
   end
 
-  def show() do
-    #
+  def show(conn, _params) do
+    # TODO: gets an user
+	conn
+	|> put_status(:ok)
   end
 
-  def update() do
-	#
+  def update(conn, _params) do
+    # TODO: Updates an user
+    conn
+    |> put_status(:ok)
   end
 
-  def delete() do
-	#
+  def delete(conn, _params) do
+    # TODO: Deletes an user
+    conn
+    |> put_status(:ok)
   end
 	
 end

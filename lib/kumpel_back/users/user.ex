@@ -1,5 +1,7 @@
 defmodule KumpelBack.Users.User do
-  @moduledoc false
+  @moduledoc """
+  	Module that contains User schema
+  """
 
   use Ecto.Schema
   import Ecto.Changeset
@@ -25,9 +27,10 @@ defmodule KumpelBack.Users.User do
     %__MODULE__{}
     |> cast(params, @required_params_create)
     |> validate_required(@required_params_create)
-	|> validate_format(:mail, ~r/@/)
+	  |> validate_format(:mail, ~r/@/)
     |> validate_length(:name, min: 2)
-	|> add_password_hash()
+    |> validate_length(:password, min: 6)
+	  |> add_password_hash()
   end
 
   def changeset(user, params) do

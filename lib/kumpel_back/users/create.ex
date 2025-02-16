@@ -1,5 +1,7 @@
 defmodule KumpelBack.Users.Create do
-  @moduledoc false
+  @moduledoc """
+    Module that contains creation logic for the user
+  """
 
   alias KumpelBack.Users.User
   alias KumpelBack.Repo
