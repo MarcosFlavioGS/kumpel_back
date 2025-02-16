@@ -27,6 +27,8 @@ defmodule KumpelBackWeb.Router do
 
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show]
     get "/listRooms", Rooms.RoomsController, :list
+
+    resources "/users", Users.UsersController, only: [:create, :update, :delete, :show]
   end
 
   # Other scopes may use custom stacks.
