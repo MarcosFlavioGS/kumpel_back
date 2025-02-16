@@ -11,7 +11,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     This is the join function to the main room called lobby. It is free for all and does not need authentication.
   """
   @impl true
-  def join("chat_room:lobby", payload, socket) do
+  def join("chat_room:lobby", _payload, socket) do
     case Authorize.authorized("lobby") do
       {:ok, _message} -> {:ok, socket}
       {:error, message} -> {:error, %{reason: message}}
