@@ -8,6 +8,5 @@ defmodule KumpelBack.Repo.Migrations.CreateSubscriptions do
     end
 
     create unique_index(:subscriptions, [:user_id, :room_id])
-
   end
 end

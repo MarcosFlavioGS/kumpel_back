@@ -17,5 +17,4 @@ defmodule KumpelBack.Rooms.GetInfo do
       _ -> {:error, "Some error"}
     end
   end
-
 end

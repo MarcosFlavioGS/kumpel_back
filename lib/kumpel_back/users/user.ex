@@ -13,12 +13,12 @@ defmodule KumpelBack.Users.User do
   schema "users" do
     field :name, :string
     field :mail, :string
-	field :password, :string, virtual: true
+    field :password, :string, virtual: true
     field :password_hash, :string
 
-	has_many :created_rooms, KumpelBack.Rooms.Room, foreign_key: :adm_id
+    has_many :created_rooms, KumpelBack.Rooms.Room, foreign_key: :adm_id
 
-	many_to_many :subscribed_rooms, KumpelBack.Rooms.Room, join_through: "subscriptions"
+    many_to_many :subscribed_rooms, KumpelBack.Rooms.Room, join_through: "subscriptions"
 
     timestamps()
   end
@@ -27,10 +27,10 @@ defmodule KumpelBack.Users.User do
     %__MODULE__{}
     |> cast(params, @required_params_create)
     |> validate_required(@required_params_create)
-	  |> validate_format(:mail, ~r/@/)
+    |> validate_format(:mail, ~r/@/)
     |> validate_length(:name, min: 2)
     |> validate_length(:password, min: 6)
-	  |> add_password_hash()
+    |> add_password_hash()
   end
 
   def changeset(user, params) do
@@ -40,9 +40,11 @@ defmodule KumpelBack.Users.User do
     |> validate_length(:name, min: 2)
   end
 
-  defp add_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+  defp add_password_hash(
+         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
+       ) do
     change(changeset, Argon2.add_hash(password))
   end
-  defp add_password_hash(changeset), do: changeset
 
+  defp add_password_hash(changeset), do: changeset
 end

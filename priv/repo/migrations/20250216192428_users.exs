@@ -9,6 +9,5 @@ defmodule KumpelBack.Repo.Migrations.Users do
 
       timestamps()
     end
-
   end
 end

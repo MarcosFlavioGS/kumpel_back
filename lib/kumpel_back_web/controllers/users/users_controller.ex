@@ -14,17 +14,17 @@ defmodule KumpelBackWeb.Users.UsersController do
   	Creates a user
   """
   def create(conn, params) do
-   with {:ok, %User{} = user} <- Users.create(params) do
-	 conn
-	 |> put_status(:created)
-     |> render(:create, user: user)
-   end
+    with {:ok, %User{} = user} <- Users.create(params) do
+      conn
+      |> put_status(:created)
+      |> render(:create, user: user)
+    end
   end
 
   def show(conn, _params) do
     # TODO: gets an user
-	conn
-	|> put_status(:ok)
+    conn
+    |> put_status(:ok)
   end
 
   def update(conn, _params) do
@@ -38,5 +38,4 @@ defmodule KumpelBackWeb.Users.UsersController do
     conn
     |> put_status(:ok)
   end
-	
 end
