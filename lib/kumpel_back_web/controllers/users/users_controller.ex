@@ -21,10 +21,12 @@ defmodule KumpelBackWeb.Users.UsersController do
     end
   end
 
-  def show(conn, _params) do
-    # TODO: gets an user
-    conn
-    |> put_status(:ok)
+  def show(conn, %{"id" => id}) do
+    with {:ok, %User{} = user} <- Users.get(id) do
+      conn
+      |> put_status(:ok)
+      |> render(:get, user: user)
+    end
   end
 
   def update(conn, _params) do
