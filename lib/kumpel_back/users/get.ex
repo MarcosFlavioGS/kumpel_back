@@ -1,5 +1,7 @@
 defmodule KumpelBack.Users.Get do
-  @moduledoc false
+	@moduledoc """
+		Module to get an user
+	"""
 
   alias KumpelBack.Users.User
   alias KumpelBack.Repo

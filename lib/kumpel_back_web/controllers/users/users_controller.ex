@@ -21,6 +21,9 @@ defmodule KumpelBackWeb.Users.UsersController do
     end
   end
 
+  @doc """
+    Gets an user
+  """
   def show(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- Users.get(id) do
       conn
@@ -29,12 +32,18 @@ defmodule KumpelBackWeb.Users.UsersController do
     end
   end
 
+  @doc """
+    Updates an user
+  """
   def update(conn, _params) do
     # TODO: Updates an user
     conn
     |> put_status(:ok)
   end
 
+  @doc """
+    Deletes an user
+  """
   def delete(conn, _params) do
     # TODO: Deletes an user
     conn
