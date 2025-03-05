@@ -5,7 +5,7 @@ defmodule KumpelBack.Repo.Migrations.Rooms do
     create table(:rooms) do
       add :name, :string
       add :code, :string
-      add :adm_id, references(:users, on_delete: :delete_all)
+      add :adm_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps()
     end

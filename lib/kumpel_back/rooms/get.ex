@@ -12,7 +12,7 @@ defmodule KumpelBack.Rooms.Get do
   def call(id) do
     case Repo.get(Room, id) do
       nil -> {:error, :not_found}
-      room -> {:ok, room}
+      room -> {:ok, Repo.preload(room, subscribers: :adm_id)}
     end
   end
 end

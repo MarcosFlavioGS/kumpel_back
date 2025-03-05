@@ -6,17 +6,17 @@ defmodule KumpelBack.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_params_create [:name, :code]
-  @required_params_update [:name, :code]
+  @required_params_create [:name, :code, :adm_id]
+  @required_params_update [:name, :code, :adm_id]
 
-  @derive {Jason.Encoder, only: [:name, :adm, :code, :subscribers]}
+  @derive {Jason.Encoder, only: [:name, :adm_id, :code, :subscribers]}
   schema "rooms" do
     field :name, :string
     field :code, :string
 
     belongs_to :adm, KumpelBack.Users.User, foreign_key: :adm_id
 
-    many_to_many :subscribers, MyApp.Users.User, join_through: "subscriptions"
+    many_to_many :subscribers, KumpelBack.Users.User, join_through: "subscriptions"
 
     timestamps()
   end
@@ -27,6 +27,7 @@ defmodule KumpelBack.Rooms.Room do
     |> validate_required(@required_params_create)
     |> validate_length(:name, min: 2)
     |> validate_length(:code, min: 6)
+    |> foreign_key_constraint(:adm_id)
   end
 
   def changeset(room, params) do

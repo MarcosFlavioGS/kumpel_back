@@ -12,7 +12,8 @@ defmodule KumpelBack.Users.Get do
   def call(id) do
 		case Repo.get(User, id) do
 			nil -> {:error, :not_found}
-	  	user -> {:ok, Repo.preload(user, [:created_rooms, :subscribed_rooms])}
+	  	user ->
+				{:ok, Repo.preload(user, [:subscribed_rooms, created_rooms: :subscribers])}
 		end
   end
   

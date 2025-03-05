@@ -39,7 +39,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
     |> put_status(:ok)
   end
 
-  def list(conn, %{}) do
+  def index(conn, %{}) do
     with {:ok, [%Room{} | _] = rooms} <- Rooms.list() do
       conn
       |> put_status(:ok)

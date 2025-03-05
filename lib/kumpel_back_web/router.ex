@@ -25,8 +25,7 @@ defmodule KumpelBackWeb.Router do
 
     get "/health", Health.HealthController, :index
 
-    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show]
-    get "/listRooms", Rooms.RoomsController, :list
+    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show, :index]
 
     resources "/users", Users.UsersController, only: [:create, :update, :delete, :show]
   end

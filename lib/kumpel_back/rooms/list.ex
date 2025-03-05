@@ -11,8 +11,8 @@ defmodule KumpelBack.Rooms.List do
   """
   def call() do
     case Repo.all(Room) do
-      rooms -> {:ok, rooms}
-      _ -> {:error, :not_found}
+      [] -> {:error, :not_found}
+      rooms -> {:ok, Repo.preload(rooms, [:adm, :subscribers])}
     end
   end
 end
