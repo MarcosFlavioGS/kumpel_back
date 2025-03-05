@@ -36,4 +36,26 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       users: users
     }
   end
+
+  @doc """
+  Renders the updated user
+  """
+  def update(%{user: user}) do
+    %{
+      user_id: user.id,
+      name: user.name,
+      mail: user.mail,
+      created_rooms: Enum.map(user.created_rooms, fn room -> %{room_id: room.id} end),
+    }
+  end
+
+  @doc """
+  Renders the deleted user
+  """
+  def delete(%{user: user}) do
+    %{
+      message: "User deleted !",
+      user_id: user.id,
+    }
+  end
 end
