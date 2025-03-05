@@ -25,11 +25,13 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       id: user.id,
       name: user.name,
       mail: user.mail,
-      created_rooms: Enum.map(user.created_rooms, fn room ->
-        %{
-          name: room.name,
-          room_id: room.id
-        } end)
+      created_rooms:
+        Enum.map(user.created_rooms, fn room ->
+          %{
+            name: room.name,
+            room_id: room.id
+          }
+        end)
     }
   end
 
@@ -39,19 +41,21 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   """
   def get(%{users: users}) do
     %{
-      users: Enum.map(
-        users,
-        fn user ->
+      users:
+        Enum.map(users, fn user ->
           %{
             user_id: user.id,
             name: user.name,
             mail: user.mail,
-            created_rooms: Enum.map(user.created_rooms, fn room ->
-              %{
-                name: room.name,
-                room_id: room.id
-              } end),
-          } end)
+            created_rooms:
+              Enum.map(user.created_rooms, fn room ->
+                %{
+                  name: room.name,
+                  room_id: room.id
+                }
+              end)
+          }
+        end)
     }
   end
 
@@ -63,11 +67,13 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       user_id: user.id,
       name: user.name,
       mail: user.mail,
-      created_rooms: Enum.map(user.created_rooms, fn room ->
-        %{
-          name: room.name,
-          room_id: room.id
-        } end),
+      created_rooms:
+        Enum.map(user.created_rooms, fn room ->
+          %{
+            name: room.name,
+            room_id: room.id
+          }
+        end)
     }
   end
 
@@ -77,7 +83,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   def delete(%{user: user}) do
     %{
       message: "User deleted !",
-      user_id: user.id,
+      user_id: user.id
     }
   end
 end

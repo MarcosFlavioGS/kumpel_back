@@ -11,8 +11,14 @@ defmodule KumpelBack.Rooms.Get do
   """
   def call(id) do
     case Repo.get(Room, id) do
-      nil -> {:error, :not_found}
-      room -> {:ok, Repo.preload(room, subscribers: [created_rooms: :subscribers, subscribed_rooms: :subscribers])}
+      nil ->
+        {:error, :not_found}
+
+      room ->
+        {:ok,
+         Repo.preload(room,
+           subscribers: [created_rooms: :subscribers, subscribed_rooms: :subscribers]
+         )}
     end
   end
 end

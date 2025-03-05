@@ -14,4 +14,4 @@ defmodule KumpelBack.Users.Delete do
       user -> Repo.delete(user)
     end
   end
- end
+end
