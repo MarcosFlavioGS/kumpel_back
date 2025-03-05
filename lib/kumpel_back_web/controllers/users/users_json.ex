@@ -23,7 +23,13 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   def get(%{user: user}) do
     %{
       id: user.id,
-      data: user
+      name: user.name,
+      mail: user.mail,
+      created_rooms: Enum.map(user.created_rooms, fn room ->
+        %{
+          name: room.name,
+          room_id: room.id
+        } end)
     }
   end
 
@@ -33,7 +39,19 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   """
   def get(%{users: users}) do
     %{
-      users: users
+      users: Enum.map(
+        users,
+        fn user ->
+          %{
+            user_id: user.id,
+            name: user.name,
+            mail: user.mail,
+            created_rooms: Enum.map(user.created_rooms, fn room ->
+              %{
+                name: room.name,
+                room_id: room.id
+              } end),
+          } end)
     }
   end
 
@@ -45,7 +63,11 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       user_id: user.id,
       name: user.name,
       mail: user.mail,
-      created_rooms: Enum.map(user.created_rooms, fn room -> %{room_id: room.id} end),
+      created_rooms: Enum.map(user.created_rooms, fn room ->
+        %{
+          name: room.name,
+          room_id: room.id
+        } end),
     }
   end
 
