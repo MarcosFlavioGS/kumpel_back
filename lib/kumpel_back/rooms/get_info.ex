@@ -12,6 +12,7 @@ defmodule KumpelBack.Rooms.GetInfo do
 
   def get(%{"id" => id}) do
     case Rooms.get(id) do
+      # TODO: Return complete room info
       {:ok, %Room{name: room_name}} -> {:ok, room_name}
       {:error, :not_found} -> {:error, "Room not found"}
       _ -> {:error, "Some error"}

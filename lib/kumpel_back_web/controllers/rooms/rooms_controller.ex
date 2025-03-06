@@ -9,7 +9,12 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   action_fallback KumpelBackWeb.Rooms.FallbackController
 
   @doc """
-    Creates a new chat room
+  create/2
+
+  params:
+  - conn: Plug.cond do
+  - params: %Room{}
+  end
   """
   def create conn, params do
     with {:ok, %Room{} = room} <- Rooms.create(params) do
@@ -19,6 +24,28 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
     end
   end
 
+  @doc """
+  update/2
+
+  params:
+  - conn: Plug.conn
+  - %{"id" => id, ..params}
+  """
+  def update(conn, params) do
+    with {:ok, room} <- Rooms.update(params) do
+      conn
+      |> put_status(:ok)
+      |> render(:update, room: room)
+    end
+  end
+
+  @doc """
+  show/2
+
+  params:
+  - conn: Plug.conn
+  - %{"id" => id}
+  """
   def show(conn, %{"id" => id}) do
     with {:ok, %Room{} = room} <- Rooms.get(id) do
       conn
@@ -27,23 +54,32 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
     end
   end
 
-  def update(conn, _params) do
-    # TODO: Updates a chat room
-    conn
-    |> put_status(:ok)
-  end
+  @doc """
+  index/1
 
-  def delete(conn, _params) do
-    # TODO: Deletes a chat room
-    conn
-    |> put_status(:ok)
-  end
-
+  params:
+  - conn: Plug.conn
+  """
   def index(conn, %{}) do
     with {:ok, [%Room{} | _] = rooms} <- Rooms.list() do
       conn
       |> put_status(:ok)
       |> render(:get, rooms: rooms)
+    end
+  end
+
+  @doc """
+  Delete/2
+
+  params:
+  - conn: Plug.conn
+  - %{"id" => id}
+  """
+  def delete(conn, %{"id" => id}) do
+    with {:ok, %Room{} = room} <- Rooms.delete(id) do
+      conn
+      |> put_status(:ok)
+      |> render(:delete, room: room)
     end
   end
 end

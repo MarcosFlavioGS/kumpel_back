@@ -7,7 +7,7 @@ defmodule KumpelBack.Users.User do
   import Ecto.Changeset
 
   @required_params_create [:name, :mail, :password]
-  @required_params_update [:name, :mail, :password]
+  @required_params_update [:name, :mail]
 
   @derive {Jason.Encoder, only: [:name, :mail, :created_rooms, :subscribed_rooms]}
   schema "users" do

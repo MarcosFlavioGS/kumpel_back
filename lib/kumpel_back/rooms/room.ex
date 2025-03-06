@@ -7,7 +7,7 @@ defmodule KumpelBack.Rooms.Room do
   import Ecto.Changeset
 
   @required_params_create [:name, :code, :adm_id]
-  @required_params_update [:name, :code, :adm_id]
+  @required_params_update [:name, :code]
 
   @derive {Jason.Encoder, only: [:name, :adm_id, :code, :subscribers]}
   schema "rooms" do
@@ -32,7 +32,7 @@ defmodule KumpelBack.Rooms.Room do
 
   def changeset(room, params) do
     room
-    |> cast(params, @required_params_create)
+    |> cast(params, @required_params_update)
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
     |> validate_length(:code, min: 6)

@@ -16,8 +16,9 @@ defmodule KumpelBack.Rooms.Get do
 
       room ->
         {:ok,
-         Repo.preload(room,
-           subscribers: [created_rooms: :subscribers, subscribed_rooms: :subscribers]
+         Repo.preload(
+           room,
+           [:adm, :subscribers]
          )}
     end
   end
