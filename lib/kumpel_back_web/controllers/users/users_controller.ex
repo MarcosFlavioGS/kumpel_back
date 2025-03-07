@@ -1,6 +1,6 @@
 defmodule KumpelBackWeb.Users.UsersController do
   @moduledoc """
-  	Module for users controller
+  	Module for users controller functions
   """
 
   use KumpelBackWeb, :controller

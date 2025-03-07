@@ -1,5 +1,7 @@
 defmodule KumpelBackWeb.Rooms.RoomsController do
-  @moduledoc false
+  @moduledoc """
+  Module for Rooms controller functions
+  """
 
   use KumpelBackWeb, :controller
 
