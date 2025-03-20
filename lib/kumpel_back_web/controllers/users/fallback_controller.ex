@@ -13,10 +13,18 @@ defmodule KumpelBackWeb.Users.FallbackController do
     |> render(:error, status: :not_found)
   end
 
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: KumpelBackWeb.Users.ErrorJSON)
+    |> render(:error, status: :unauthorized)
+  end
+
   def call(conn, {:error, changeset}) do
     conn
     |> put_status(:bad_request)
     |> put_view(json: KumpelBackWeb.Users.ErrorJSON)
     |> render(:error, changeset: changeset)
   end
+
 end

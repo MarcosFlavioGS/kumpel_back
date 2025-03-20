@@ -24,6 +24,14 @@ defmodule KumpelBackWeb.Users.ErrorJSON do
     }
   end
 
+  # login
+  def error(%{status: :unauthorized}) do
+    %{
+      status: :unauthorized,
+      message: "Unable to login"
+    }
+  end
+
   # Create
   def error(%{changeset: changeset}) do
     %{

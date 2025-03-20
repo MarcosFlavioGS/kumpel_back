@@ -8,6 +8,8 @@ defmodule KumpelBackWeb.Users.UsersController do
   alias KumpelBack.Users
   alias Users.User
 
+  alias KumpelBackWeb.Token
+
   action_fallback KumpelBackWeb.Users.FallbackController
 
   @doc """
@@ -82,6 +84,23 @@ defmodule KumpelBackWeb.Users.UsersController do
       conn
       |> put_status(:ok)
       |> render(:delete, user: user)
+    end
+  end
+
+  @doc """
+  login/2
+
+  params:
+  - conn: Plug.conn
+  - %{"id" => id, "password" => password}
+  """
+  def login(conn, params) do
+    with {:ok, %User{} = user} <- Users.login(params) do
+    	token = Token.sign(user)
+
+      conn
+      |> put_status(:ok)
+      |> render(:login, token: token)
     end
   end
 end

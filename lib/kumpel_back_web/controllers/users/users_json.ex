@@ -86,4 +86,14 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       user_id: user.id
     }
   end
+
+  @doc """
+  Renders the signed token
+  """
+  def login(%{token: token}) do
+    %{
+      message: "Authorized",
+      token: token
+    }
+  end
 end
