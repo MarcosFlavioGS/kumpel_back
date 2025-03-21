@@ -18,7 +18,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
 
   params:
   - conn: Plug.conn
-  - %{"id" => id, "password" => password}
+  - %{"mail" => mail, "password" => password}
   """
   def login(conn, params) do
     with {:ok, %User{} = user} <- Users.login(params) do
