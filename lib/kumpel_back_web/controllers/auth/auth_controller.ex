@@ -3,7 +3,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
   Module with all auth controllers
   """
 
-    use KumpelBackWeb, :controller
+  use KumpelBackWeb, :controller
 
   alias KumpelBack.Users
   alias Users.User
@@ -11,7 +11,6 @@ defmodule KumpelBackWeb.Auth.AuthController do
   alias KumpelBackWeb.Token
 
   action_fallback KumpelBackWeb.Auth.FallbackController
-
 
   @doc """
   login/2
@@ -22,7 +21,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
   """
   def login(conn, params) do
     with {:ok, %User{} = user} <- Users.login(params) do
-    	token = Token.sign(user)
+      token = Token.sign(user)
 
       conn
       |> put_status(:ok)

@@ -86,5 +86,4 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       user_id: user.id
     }
   end
-
 end

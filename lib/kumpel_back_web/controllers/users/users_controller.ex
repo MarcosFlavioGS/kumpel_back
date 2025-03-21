@@ -84,5 +84,4 @@ defmodule KumpelBackWeb.Users.UsersController do
       |> render(:delete, user: user)
     end
   end
-
 end

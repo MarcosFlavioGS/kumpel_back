@@ -19,5 +19,4 @@ defmodule KumpelBackWeb.Users.FallbackController do
     |> put_view(json: KumpelBackWeb.Users.ErrorJSON)
     |> render(:error, changeset: changeset)
   end
-
 end

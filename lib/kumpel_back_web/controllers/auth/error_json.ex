@@ -31,5 +31,4 @@ defmodule KumpelBackWeb.Auth.ErrorJSON do
       message: "Unable to login"
     }
   end
-
 end
