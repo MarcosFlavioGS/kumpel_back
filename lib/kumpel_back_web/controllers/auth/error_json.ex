@@ -1,6 +1,6 @@
-defmodule KumpelBackWeb.Users.ErrorJSON do
+defmodule KumpelBackWeb.Auth.ErrorJSON do
   @moduledoc """
-    Contains all error view functions for the users_controller
+    Contains all error view functions for the auth_controller
   """
   # If you want to customize a particular status code,
   # you may add your own clauses, such as:
@@ -16,7 +16,7 @@ defmodule KumpelBackWeb.Users.ErrorJSON do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
 
-  # GET
+  # User not found
   def error(%{status: :not_found}) do
     %{
       status: :not_found,
@@ -24,16 +24,12 @@ defmodule KumpelBackWeb.Users.ErrorJSON do
     }
   end
 
-  # Create
-  def error(%{changeset: changeset}) do
+  # login
+  def error(%{status: :unauthorized}) do
     %{
-      errors: Ecto.Changeset.traverse_errors(changeset, &translate_errors/1)
+      status: :unauthorized,
+      message: "Unable to login"
     }
   end
 
-  defp translate_errors({msg, opts}) do
-    Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
-      opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
-    end)
-  end
 end

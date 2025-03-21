@@ -1,8 +1,8 @@
-defmodule KumpelBackWeb.Users.FallbackController do
+defmodule KumpelBackWeb.Auth.FallbackController do
   @moduledoc """
     call functions for the fallback controller and
     puts especific error views considering parameters received from captured
-    errors from the users_controller
+    errors from the auth_controller
   """
   use KumpelBackWeb, :controller
 
@@ -13,11 +13,10 @@ defmodule KumpelBackWeb.Users.FallbackController do
     |> render(:error, status: :not_found)
   end
 
-  def call(conn, {:error, changeset}) do
+  def call(conn, {:error, :unauthorized}) do
     conn
-    |> put_status(:bad_request)
+    |> put_status(:unauthorized)
     |> put_view(json: KumpelBackWeb.Users.ErrorJSON)
-    |> render(:error, changeset: changeset)
+    |> render(:error, status: :unauthorized)
   end
-
 end

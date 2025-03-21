@@ -23,12 +23,17 @@ defmodule KumpelBackWeb.Router do
   scope "/api", KumpelBackWeb do
     pipe_through :api
 
+    # Health
     get "/health", Health.HealthController, :index
 
+    # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show, :index]
 
+    # Users
     resources "/users", Users.UsersController, only: [:create, :update, :delete, :show, :index]
-    post "/users/login", Users.UsersController, :login
+
+    # Auth
+    post "/auth/login", Auth.AuthController, :login
   end
 
   # Other scopes may use custom stacks.
