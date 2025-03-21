@@ -30,6 +30,7 @@ defmodule KumpelBack.Users.User do
     |> validate_format(:mail, ~r/@/)
     |> validate_length(:name, min: 2)
     |> validate_length(:password, min: 6)
+    |> unique_constraint(:mail)
     |> add_password_hash()
   end
 
@@ -38,6 +39,7 @@ defmodule KumpelBack.Users.User do
     |> cast(params, @required_params_create)
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
+    |> unique_constraint(:mail)
   end
 
   defp add_password_hash(
