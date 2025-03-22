@@ -14,12 +14,17 @@ defmodule KumpelBackWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug KumpelBackWeb.Plugs.Auth
+  end
+
   scope "/", KumpelBackWeb do
     pipe_through :browser
 
     get "/", PageController, :home
   end
 
+  # Authentication disabled
   scope "/api", KumpelBackWeb do
     pipe_through :api
 
@@ -27,13 +32,24 @@ defmodule KumpelBackWeb.Router do
     get "/health", Health.HealthController, :index
 
     # Rooms
-    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete, :show, :index]
+    resources "/rooms", Rooms.RoomsController, only: [:show, :index]
 
     # Users
-    resources "/users", Users.UsersController, only: [:create, :update, :delete, :show, :index]
+    resources "/users", Users.UsersController, only: [:create, :show, :index]
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
+  end
+
+  # Authentication enabled
+  scope "/api", KumpelBackWeb do
+    pipe_through [:api, :auth]
+
+    # Rooms
+    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
+
+    # Users
+    resources "/users", Users.UsersController, only: [:update, :delete]
   end
 
   # Other scopes may use custom stacks.
