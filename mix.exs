@@ -32,6 +32,7 @@ defmodule KumpelBack.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:cors_plug, "~> 3.0"},
       {:argon2_elixir, "~> 4.0"},
       {:ex_doc, "~> 0.22.0", only: :dev, runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},

@@ -27,6 +27,12 @@ config :kumpel_back, KumpelBackWeb.Endpoint,
   pubsub_server: KumpelBack.PubSub,
   live_view: [signing_salt: "+ikEGB34"]
 
+# Add this configuration at the config/config.exs
+config :cors_plug,
+  origin: ["http://localhost:3000"], # Your Next.js origin
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  headers: ["Authorization", "Content-Type", "Accept"]
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

@@ -12,6 +12,7 @@ defmodule KumpelBackWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug CORSPlug
   end
 
   pipeline :auth do
@@ -39,6 +40,7 @@ defmodule KumpelBackWeb.Router do
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
+    options "/auth/login", AuthController, :options
   end
 
   # Authentication enabled
