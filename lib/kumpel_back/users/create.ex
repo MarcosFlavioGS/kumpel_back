@@ -19,9 +19,11 @@ defmodule KumpelBack.Users.Create do
           {:ok, user} = result ->
             Logger.log_user_creation(user.id, "system")
             {:ok, Repo.preload(user, [:created_rooms, :subscribed_rooms])}
+
           {:error, changeset} ->
             {:error, changeset}
         end
+
       false ->
         {:error, changeset}
     end

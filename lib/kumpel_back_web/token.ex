@@ -8,8 +8,10 @@ defmodule KumpelBackWeb.Token do
 
   @sign_salt "Kumpel_User"
   @refresh_salt "Kumpel_Refresh"
-  @access_token_expiry 3600 # 1 hour in seconds
-  @refresh_token_expiry 2592000 # 30 days in seconds
+  # 1 hour in seconds
+  @access_token_expiry 3600
+  # 30 days in seconds
+  @refresh_token_expiry 2_592_000
 
   @doc """
   Signs a new access token for a user.

@@ -49,7 +49,9 @@ defmodule KumpelBack.Users.User do
 
   defp validate_password(changeset) do
     case get_change(changeset, :password) do
-      nil -> add_error(changeset, :password, "Password is required")
+      nil ->
+        add_error(changeset, :password, "Password is required")
+
       password ->
         case Password.validate(password) do
           :ok -> changeset
@@ -60,7 +62,9 @@ defmodule KumpelBack.Users.User do
 
   defp put_password_hash(changeset) do
     case get_change(changeset, :password) do
-      nil -> changeset
+      nil ->
+        changeset
+
       password ->
         changeset
         |> put_change(:password_hash, Argon2.hash_pwd_salt(password))

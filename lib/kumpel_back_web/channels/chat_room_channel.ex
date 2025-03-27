@@ -21,12 +21,20 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       :ok ->
         case Authorize.authorized("lobby") do
           {:ok, _message} ->
-            Logger.log_room_access(socket.assigns.user_id, "lobby", true, "Successfully joined lobby")
+            Logger.log_room_access(
+              socket.assigns.user_id,
+              "lobby",
+              true,
+              "Successfully joined lobby"
+            )
+
             {:ok, socket}
+
           {:error, message} ->
             Logger.log_room_access(socket.assigns.user_id, "lobby", false, message)
             {:error, %{reason: message}}
         end
+
       :error ->
         Logger.log_room_access(socket.assigns.user_id, "lobby", false, "Room is full")
         {:error, %{reason: "Room is full"}}
@@ -42,12 +50,20 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       :ok ->
         case Authorize.authorized(room_id, payload) do
           {:ok, _message} ->
-            Logger.log_room_access(socket.assigns.user_id, room_id, true, "Successfully joined room")
+            Logger.log_room_access(
+              socket.assigns.user_id,
+              room_id,
+              true,
+              "Successfully joined room"
+            )
+
             {:ok, socket}
+
           {:error, message} ->
             Logger.log_room_access(socket.assigns.user_id, room_id, false, message)
             {:error, %{reason: message}}
         end
+
       :error ->
         Logger.log_room_access(socket.assigns.user_id, room_id, false, "Room is full")
         {:error, %{reason: "Room is full"}}
@@ -78,9 +94,11 @@ defmodule KumpelBackWeb.ChatRoomChannel do
             sanitized_message = sanitize_message(payload)
             broadcast(socket, "shout", sanitized_message)
             {:noreply, socket}
+
           :error ->
             {:reply, {:error, %{reason: "Rate limit exceeded"}}, socket}
         end
+
       :error ->
         {:reply, {:error, %{reason: "Invalid message"}}, socket}
     end
@@ -99,11 +117,14 @@ defmodule KumpelBackWeb.ChatRoomChannel do
               user: sanitize_message(user),
               color: sanitize_message(color)
             }
+
             broadcast!(socket, "new_message", sanitized_message)
             {:noreply, socket}
+
           :error ->
             {:reply, {:error, %{reason: "Rate limit exceeded"}}, socket}
         end
+
       :error ->
         {:reply, {:error, %{reason: "Invalid message"}}, socket}
     end
@@ -114,9 +135,11 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       {:ok, nil} ->
         Cachex.put(:room_connections, room_id, 1)
         :ok
+
       {:ok, count} when count < @max_connections_per_room ->
         Cachex.incr(:room_connections, room_id)
         :ok
+
       _ ->
         :error
     end
@@ -124,13 +147,16 @@ defmodule KumpelBackWeb.ChatRoomChannel do
 
   defp check_rate_limit(socket) do
     key = "rate_limit:#{socket.id}"
+
     case Cachex.get(:rate_limit_cache, key) do
       {:ok, nil} ->
         Cachex.put(:rate_limit_cache, key, 1, ttl: 60)
         :ok
+
       {:ok, count} when count < @max_messages_per_minute ->
         Cachex.incr(:rate_limit_cache, key)
         :ok
+
       _ ->
         :error
     end
@@ -143,13 +169,17 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       :error
     end
   end
+
   defp validate_message(_), do: :error
 
   defp sanitize_message(message) when is_binary(message) do
     message
-    |> String.replace(~r/<[^>]*>/, "") # Remove HTML tags
-    |> String.replace(~r/&[^;]+;/, "") # Remove HTML entities
+    # Remove HTML tags
+    |> String.replace(~r/<[^>]*>/, "")
+    # Remove HTML entities
+    |> String.replace(~r/&[^;]+;/, "")
     |> String.trim()
   end
+
   defp sanitize_message(message), do: message
 end

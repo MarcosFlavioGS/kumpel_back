@@ -13,7 +13,8 @@ defmodule KumpelBackWeb.Auth.AuthController do
   action_fallback KumpelBackWeb.Auth.FallbackController
 
   @max_attempts 5
-  @lockout_duration 300 # 5 minutes in seconds
+  # 5 minutes in seconds
+  @lockout_duration 300
 
   @doc """
   login/2
@@ -36,6 +37,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
           |> put_status(:ok)
           |> render(:login, %{token: token, refresh_token: refresh_token})
         end
+
       :error ->
         # Log failed login attempt
         Logger.log_failed_login(params["mail"], "Rate limit exceeded")

@@ -17,14 +17,17 @@ defmodule KumpelBack.Users.Password do
       :ok
     end
   end
+
   def validate(_), do: {:error, "Password must be a string"}
 
   defp check_length(password) do
     cond do
       String.length(password) < @min_length ->
         {:error, "Password must be at least #{@min_length} characters long"}
+
       String.length(password) > @max_length ->
         {:error, "Password must not exceed #{@max_length} characters"}
+
       true ->
         :ok
     end
@@ -34,12 +37,16 @@ defmodule KumpelBack.Users.Password do
     cond do
       !Regex.match?(~r/[A-Z]/, password) ->
         {:error, "Password must contain at least one uppercase letter"}
+
       !Regex.match?(~r/[a-z]/, password) ->
         {:error, "Password must contain at least one lowercase letter"}
+
       !Regex.match?(~r/[0-9]/, password) ->
         {:error, "Password must contain at least one number"}
+
       !Regex.match?(~r/[^A-Za-z0-9]/, password) ->
         {:error, "Password must contain at least one special character"}
+
       true ->
         :ok
     end

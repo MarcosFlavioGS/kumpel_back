@@ -31,7 +31,10 @@ defmodule KumpelBackWeb.Plugs.Auth do
     |> put_resp_header("x-frame-options", "DENY")
     |> put_resp_header("x-xss-protection", "1; mode=block")
     |> put_resp_header("strict-transport-security", "max-age=31536000; includeSubDomains")
-    |> put_resp_header("content-security-policy", "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';")
+    |> put_resp_header(
+      "content-security-policy",
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    )
     |> put_resp_header("referrer-policy", "strict-origin-when-cross-origin")
     |> put_resp_header("permissions-policy", "geolocation=(), microphone=(), camera=()")
   end
