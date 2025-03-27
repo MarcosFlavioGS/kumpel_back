@@ -1,87 +1,164 @@
-# Kumpel Chat Backend
+# Kumpel Chat
 
-## Overview
-Kumpel Chat is a real-time chat room application backend built with Phoenix and Elixir, supporting multiple chat rooms with authentication and authorization.
+A secure, real-time chat application built with Phoenix and Elixir, featuring robust security measures and modern architecture.
+
+![Elixir](https://img.shields.io/badge/Elixir-1.15-blue)
+![Phoenix](https://img.shields.io/badge/Phoenix-1.7-green)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 ## Features
-- Lobby chat room (open access)
-- Private chat rooms with access codes
-- Real-time message broadcasting
-- Room creation and management
-- Authentication for room access
 
-## Prerequisites
-- Elixir: >= 1.12
-- Erlang/OTP: >= 24
-- Phoenix Framework: ~> 1.7
-- PostgreSQL: Database for managing chat rooms.
+- 🔒 **Secure Authentication**
+  - JWT-based authentication with refresh tokens
+  - Rate limiting on login attempts
+  - Password hashing with Argon2
+  - Session management and security headers
 
-## Installation
+- 💬 **Real-time Chat**
+  - WebSocket-based communication
+  - Multiple chat rooms support
+  - Message rate limiting
+  - Message sanitization and validation
 
-1. Clone the repository
-```bash
-git clone <repository-url>
-cd kumpel_back
+- 🛡️ **Security Features**
+  - Comprehensive audit logging
+  - Input validation and sanitization
+  - Rate limiting on API endpoints
+  - XSS protection
+  - CSRF protection
+  - Secure headers configuration
+
+- 🔍 **Monitoring & Logging**
+  - Detailed audit logs for security events
+  - Performance monitoring
+  - User activity tracking
+  - Security incident logging
+
+## Tech Stack
+
+- **Backend**: Elixir/Phoenix
+- **Database**: PostgreSQL
+- **Cache**: Cachex
+- **Authentication**: JWT
+- **Real-time**: Phoenix Channels
+- **Security**: Argon2, Guardian
+
+## Getting Started
+
+### Prerequisites
+
+- Elixir 1.15 or later
+- Erlang/OTP 25 or later
+- PostgreSQL 14 or later
+- Node.js 18 or later (for assets)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/kumpel_back.git
+   cd kumpel_back
+   ```
+
+2. Install dependencies:
+   ```bash
+   mix deps.get
+   cd assets && npm install && cd ..
+   ```
+
+3. Set up the database:
+   ```bash
+   mix ecto.setup
+   ```
+
+4. Start the Phoenix server:
+   ```bash
+   mix phx.server
+   ```
+
+The application will be available at `http://localhost:4000`.
+
+## API Documentation
+
+### Authentication
+
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "mail": "user@example.com",
+  "password": "secure_password"
+}
 ```
 
-2. Install dependencies
-```bash
-mix deps.get
+### WebSocket Connection
+
+```javascript
+const socket = new Socket("/socket", {
+  params: { token: "your_jwt_token" }
+});
 ```
 
-3. Setup database
-```bash
-mix ecto.create
-mix ecto.migrate
-```
+## Security Features
 
-4. Start the server
-```bash
-mix phx.server
-```
+### Authentication
+- JWT-based authentication with refresh tokens
+- Rate limiting on login attempts (5 attempts per 5 minutes)
+- Secure password hashing with Argon2
+- Session management with secure headers
 
-## Key Modules
+### Chat Security
+- Message rate limiting (30 messages per minute)
+- Input validation and sanitization
+- XSS protection
+- Room access control
+- Connection limits per room
 
-### ChatRoomChannel
-- Handles WebSocket connections for chat rooms
-- Supports joining lobby and private rooms
-- Manages message broadcasting
+### API Security
+- Rate limiting on endpoints
+- CSRF protection
+- Secure headers configuration
+- Input validation
+- Audit logging
 
-### RoomsController
-- REST API for room management
-- Endpoints for creating, retrieving, updating, and deleting rooms
+## Development
 
-### Authorization
-- Validates room access codes
-- Manages room entry permissions
+### Running Tests
 
-## Room Creation
-Rooms require:
-- Name (min 2 characters)
-- Access Code (min 6 characters)
-- Administrator
-
-## WebSocket Events
-- `join`: Enter a chat room
-- `ping`: Get room information
-- `shout`: Broadcast messages to all room participants
-- `new_message`: Send a new chat message
-
-## Configuration
-Update `config/config.exs` with your specific environment settings.
-
-## Testing
-Run tests with:
 ```bash
 mix test
 ```
 
+### Code Style
+
+The project follows the [Elixir Style Guide](https://github.com/christopheradams/elixir_style_guide).
+
+### Database Migrations
+
+```bash
+mix ecto.migrate
+```
+
 ## Contributing
+
 1. Fork the repository
-2. Create your feature branch
-3. Commit changes
-4. Push to the branch
-5. Create a Pull Request
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
-[Add your license here]
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Phoenix Framework](https://www.phoenixframework.org/)
+- [Elixir](https://elixir-lang.org/)
+- [Guardian](https://github.com/ueberauth/guardian)
+- [Argon2](https://github.com/riverrun/argon2_elixir)
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
