@@ -36,12 +36,12 @@ defmodule KumpelBack.Users.User do
     |> validate_length(:name, min: 2)
     |> validate_password()
     |> unique_constraint(:mail)
-    |> add_password_hash()
+    |> put_password_hash()
   end
 
   def changeset(user, params) do
     user
-    |> cast(params, @required_params_create)
+    |> cast(params, @required_params_update)
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
     |> unique_constraint(:mail)
@@ -49,7 +49,7 @@ defmodule KumpelBack.Users.User do
 
   defp validate_password(changeset) do
     case get_change(changeset, :password) do
-      nil -> changeset
+      nil -> add_error(changeset, :password, "Password is required")
       password ->
         case Password.validate(password) do
           :ok -> changeset
@@ -58,11 +58,13 @@ defmodule KumpelBack.Users.User do
     end
   end
 
-  defp add_password_hash(
-         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
-       ) do
-    change(changeset, password_hash: Argon2.hash_pwd_salt(password))
+  defp put_password_hash(changeset) do
+    case get_change(changeset, :password) do
+      nil -> changeset
+      password ->
+        changeset
+        |> put_change(:password_hash, Argon2.hash_pwd_salt(password))
+        |> delete_change(:password)
+    end
   end
-
-  defp add_password_hash(changeset), do: changeset
 end
