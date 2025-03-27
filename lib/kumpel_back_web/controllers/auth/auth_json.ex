@@ -6,10 +6,11 @@ defmodule KumpelBackWeb.Auth.AuthJSON do
   @doc """
   Renders the signed token
   """
-  def login(%{token: token}) do
+  def login(%{token: token, refresh_token: refresh_token}) do
     %{
       status: "Authorized",
-      token: token
+      token: token,
+      refresh: refresh_token
     }
   end
 end

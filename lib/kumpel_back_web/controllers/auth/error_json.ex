@@ -31,4 +31,11 @@ defmodule KumpelBackWeb.Auth.ErrorJSON do
       message: "Unable to login"
     }
   end
+
+  def error(%{message: message}) do
+    %{
+      status: :unauthorized,
+      message: message
+    }
+  end
 end

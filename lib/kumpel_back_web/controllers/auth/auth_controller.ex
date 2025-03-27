@@ -44,7 +44,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
 
         conn
         |> put_status(:too_many_requests)
-        |> render(:error, %{message: "Too many login attempts. Please try again later."})
+        |> render(:error, message: "Too many login attempts. Please try again later.")
     end
   end
 
