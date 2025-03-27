@@ -16,7 +16,7 @@ defmodule KumpelBack.Users.Create do
     case changeset.valid? do
       true ->
         case Repo.insert(changeset) do
-          {:ok, user} = result ->
+          {:ok, user} ->
             Logger.log_user_creation(user.id, "system")
             {:ok, Repo.preload(user, [:created_rooms, :subscribed_rooms])}
 
