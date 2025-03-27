@@ -6,6 +6,8 @@ defmodule KumpelBack.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias KumpelBack.Users.Password
+
   @required_params_create [:name, :mail, :password]
   @required_params_update [:name, :mail]
 
@@ -15,6 +17,9 @@ defmodule KumpelBack.Users.User do
     field :mail, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    field :failed_login_attempts, :integer, default: 0
+    field :locked_until, :utc_datetime
+    field :last_login, :utc_datetime
 
     has_many :created_rooms, KumpelBack.Rooms.Room, foreign_key: :adm_id
 
@@ -29,7 +34,7 @@ defmodule KumpelBack.Users.User do
     |> validate_required(@required_params_create)
     |> validate_format(:mail, ~r/@/)
     |> validate_length(:name, min: 2)
-    |> validate_length(:password, min: 6)
+    |> validate_password()
     |> unique_constraint(:mail)
     |> add_password_hash()
   end
@@ -40,6 +45,17 @@ defmodule KumpelBack.Users.User do
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
     |> unique_constraint(:mail)
+  end
+
+  defp validate_password(changeset) do
+    case get_change(changeset, :password) do
+      nil -> changeset
+      password ->
+        case Password.validate(password) do
+          :ok -> changeset
+          {:error, reason} -> add_error(changeset, :password, reason)
+        end
+    end
   end
 
   defp add_password_hash(

@@ -17,7 +17,10 @@ defmodule KumpelBack.Application do
       # Start a worker by calling: KumpelBack.Worker.start_link(arg)
       # {KumpelBack.Worker, arg},
       # Start to serve requests, typically the last entry
-      KumpelBackWeb.Endpoint
+      KumpelBackWeb.Endpoint,
+      # Start Cachex for rate limiting and connection tracking
+      Supervisor.child_spec({Cachex, name: :rate_limit_cache}, id: :rate_limit_cache),
+      Supervisor.child_spec({Cachex, name: :room_connections}, id: :room_connections)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
