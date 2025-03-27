@@ -34,9 +34,11 @@ defmodule KumpelBackWeb.Router do
 
     # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:show, :index]
+    options "/rooms", Rooms.RoomsController, :options
 
     # Users
     resources "/users", Users.UsersController, only: [:create, :show, :index]
+    options "/users", Users.UsersController, :options
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
@@ -49,9 +51,11 @@ defmodule KumpelBackWeb.Router do
 
     # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
+    options "/rooms", Rooms.RoomsController, :options
 
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
+    options "/users", Users.UsersController, :options
   end
 
   # Other scopes may use custom stacks.
