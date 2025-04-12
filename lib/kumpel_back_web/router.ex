@@ -39,6 +39,7 @@ defmodule KumpelBackWeb.Router do
     # Users
     resources "/users", Users.UsersController, only: [:create, :show, :index]
     options "/users", Users.UsersController, :options
+    options "/users/:id", Users.UsersController, :options
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
