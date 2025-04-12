@@ -31,7 +31,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
             {:ok, socket}
 
           {:error, message} ->
-            Logger.log_room_access(socket.assigns.user_id, "lobby", false, message)
+            Logger.log_room_access("lobby", false, message)
             {:error, %{reason: message}}
         end
 
@@ -51,7 +51,6 @@ defmodule KumpelBackWeb.ChatRoomChannel do
         case Authorize.authorized(room_id, payload) do
           {:ok, _message} ->
             Logger.log_room_access(
-              socket.assigns.user_id,
               room_id,
               true,
               "Successfully joined room"
@@ -60,12 +59,12 @@ defmodule KumpelBackWeb.ChatRoomChannel do
             {:ok, socket}
 
           {:error, message} ->
-            Logger.log_room_access(socket.assigns.user_id, room_id, false, message)
+            Logger.log_room_access(room_id, false, message)
             {:error, %{reason: message}}
         end
 
       :error ->
-        Logger.log_room_access(socket.assigns.user_id, room_id, false, "Room is full")
+        Logger.log_room_access(room_id, false, "Room is full")
         {:error, %{reason: "Room is full"}}
     end
   end

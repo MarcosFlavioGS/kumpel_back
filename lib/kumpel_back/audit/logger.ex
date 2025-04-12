@@ -48,8 +48,8 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a room access attempt.
   """
-  def log_room_access(user_id, room_id, success, reason) do
-    log_security_event("room_access", user_id, %{
+  def log_room_access(room_id, success, reason) do
+    log_security_event("room_access", "", %{
       room_id: room_id,
       success: success,
       reason: reason,
