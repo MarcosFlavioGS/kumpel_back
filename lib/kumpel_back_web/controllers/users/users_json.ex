@@ -29,7 +29,8 @@ defmodule KumpelBackWeb.Users.UsersJSON do
         Enum.map(user.created_rooms, fn room ->
           %{
             name: room.name,
-            room_id: room.id
+            room_id: room.id,
+            code: room.code
           }
         end)
     }
@@ -51,7 +52,8 @@ defmodule KumpelBackWeb.Users.UsersJSON do
               Enum.map(user.created_rooms, fn room ->
                 %{
                   name: room.name,
-                  room_id: room.id
+                  room_id: room.id,
+                  code: room.code
                 }
               end)
           }
@@ -71,7 +73,8 @@ defmodule KumpelBackWeb.Users.UsersJSON do
         Enum.map(user.created_rooms, fn room ->
           %{
             name: room.name,
-            room_id: room.id
+            room_id: room.id,
+            code: room.code
           }
         end)
     }

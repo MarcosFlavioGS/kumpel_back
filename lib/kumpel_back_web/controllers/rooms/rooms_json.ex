@@ -22,6 +22,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
       message: "Room updated !",
       id: room.id,
       name: room.name,
+      code: room.code,
       adm: %{
         id: room.adm_id,
         name: room.adm.name,
@@ -46,6 +47,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
     %{
       id: room.id,
       name: room.name,
+      code: room.code,
       adm: %{
         id: room.adm_id,
         name: room.adm.name,
@@ -70,6 +72,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
       %{
         id: room.id,
         name: room.name,
+        code: room.code,
         adm: %{
           id: room.adm_id,
           name: room.adm.name,
