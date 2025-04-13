@@ -78,19 +78,19 @@ defmodule KumpelBack.Audit.Logger do
   end
 
   defp get_ip_address do
-    # This should be implemented to get the actual IP address from the connection
+    #TODO: This should be implemented to get the actual IP address from the connection
     # For now, returning a placeholder
     "127.0.0.1"
   end
 
   defp get_user_agent do
-    # This should be implemented to get the actual user agent from the connection
+    # TODO: This should be implemented to get the actual user agent from the connection
     # For now, returning a placeholder
     "Unknown"
   end
 
   defp persist_log(_log_entry) do
-    # This should be implemented to persist logs to a secure storage
+    # TODO: This should be implemented to persist logs to a secure storage
     # For now, just logging to console
     :ok
   end

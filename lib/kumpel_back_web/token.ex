@@ -30,6 +30,7 @@ defmodule KumpelBackWeb.Token do
   def sign_refresh(user) do
     Token.sign(Endpoint, @refresh_salt, %{
       user_id: user.id,
+      user_mail: user.mail,
       exp: System.system_time(:second) + @refresh_token_expiry
     })
   end
