@@ -22,7 +22,6 @@ defmodule KumpelBackWeb.ChatRoomChannel do
         case Authorize.authorized("lobby") do
           {:ok, _message} ->
             Logger.log_room_access(
-              socket.assigns.user_id,
               "lobby",
               true,
               "Successfully joined lobby"
