@@ -9,11 +9,9 @@ defmodule KumpelBack.Subscription.Subscribe do
   def call(user, params) do
     with {:ok, user} <- get_user(user),
          {:ok, room} <- get_room(params["room_id"]),
-         {:ok, _message} <- verify_code(params["code"], room.code),
+         {:ok, _} <- verify_code(params["code"], room.code),
          {:ok, _} <- check_subscription(user, room) do
       subscribe_user(user, room)
-    else
-      {:error, message} -> {:error, message}
     end
   end
 
