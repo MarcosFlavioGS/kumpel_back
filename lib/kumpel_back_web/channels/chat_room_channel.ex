@@ -13,7 +13,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   @max_connections_per_room 100
 
   @doc """
-    This is the join function to the main room called lobby. It is free for all and does not need authentication.
+    This endpoint checks for an existing room on the DB and return the socket if the provided code is valid.
   """
   @impl true
   def join("chat_room:lobby", _payload, socket) do
@@ -35,14 +35,11 @@ defmodule KumpelBackWeb.ChatRoomChannel do
         end
 
       :error ->
-        Logger.log_room_access(socket.assigns.user_id, "lobby", false, "Room is full")
+        Logger.log_room_access(socket.assigns.user_id, false, "Room is full")
         {:error, %{reason: "Room is full"}}
     end
   end
 
-  @doc """
-    This endpoint checks for an existing room on the DB and return the socket if the provided code is valid.
-  """
   @impl true
   def join("chat_room:" <> room_id, payload, socket) do
     case check_connection_limit(room_id) do
@@ -69,9 +66,11 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   end
 
   @doc """
-    Ping handle_in.
+    ping - Send info about the channel
 
-    Send info about the channel
+    shout - Handles shouts from the client and broadcast to all.
+
+    new_message - Handles new messages
   """
   @impl true
   def handle_in("ping", payload, socket) do
@@ -80,9 +79,6 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     end
   end
 
-  @doc """
-    Handles shouts from the client and broadcast to all.
-  """
   @impl true
   def handle_in("shout", payload, socket) do
     case validate_message(payload) do
@@ -102,9 +98,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     end
   end
 
-  @doc """
-    Handles new messages
-  """
+  @impl true
   def handle_in("new_message", %{"body" => body, "user" => user, "color" => color}, socket) do
     case validate_message(%{"body" => body}) do
       :ok ->

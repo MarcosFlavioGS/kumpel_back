@@ -43,7 +43,7 @@ defmodule KumpelBackWeb.Router do
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
-    options "/auth/login", AuthController, :options
+    options "/auth/login", Auth.AuthController, :options
   end
 
   # Authentication enabled
