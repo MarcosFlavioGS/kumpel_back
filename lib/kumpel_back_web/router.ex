@@ -54,9 +54,13 @@ defmodule KumpelBackWeb.Router do
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
     options "/rooms", Rooms.RoomsController, :options
 
+    post "/rooms/:room_id/subscription", Subscription.SubscriptionController, :subscribe
+    options "/rooms/:room_id/subscription", Subscription.SubscriptionController, :options
+
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
     options "/users", Users.UsersController, :options
+    
   end
 
   # Other scopes may use custom stacks.
