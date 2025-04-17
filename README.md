@@ -19,6 +19,7 @@ A secure, real-time chat application built with Phoenix and Elixir, featuring ro
   - Multiple chat rooms support
   - Message rate limiting
   - Message sanitization and validation
+  - Room subscription system with access control
 
 - 🛡️ **Security Features**
   - Comprehensive audit logging
@@ -90,6 +91,24 @@ Content-Type: application/json
   "mail": "user@example.com",
   "password": "secure_password"
 }
+```
+
+### Room Subscriptions
+
+```http
+POST /api/rooms/:room_id/subscription
+Authorization: Bearer your_jwt_token
+Content-Type: application/json
+
+# Success Response (200 OK)
+{
+  "message": "Successfully subscribed to room"
+}
+
+# Error Responses
+# 401 Unauthorized - Invalid or missing token
+# 404 Not Found - Room not found
+# 400 Bad Request - User is already subscribed to this room
 ```
 
 ### WebSocket Connection
