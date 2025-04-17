@@ -7,14 +7,47 @@ defmodule KumpelBack.Subscription.Subscribe do
   alias KumpelBack.Rooms.Room
 
   def call(user, room_id) do
-    with _user <- Repo.get(User, user.user_id),
-         _room <- Repo.get(Room, room_id) do
-      # TODO: check if already subscribed
-      # TODO: Add the subscription to DataBase
-      # TODO: Handle errors
-      {:ok, "Subscribed !"}
+    with {:ok, user} <- get_user(user),
+         {:ok, room} <- get_room(room_id),
+         {:ok, _} <- check_subscription(user, room) do
+      subscribe_user(user, room)
+    end
+  end
+
+  defp get_user(user) do
+    case Repo.get(User, user.user_id) do
+      nil -> {:error, "User not found"}
+      user -> {:ok, user}
+    end
+  end
+
+  defp get_room(room_id) do
+    case Repo.get(Room, room_id) do
+      nil -> {:error, "Room not found"}
+      room -> {:ok, room}
+    end
+  end
+
+  defp check_subscription(user, room) do
+    user = Repo.preload(user, :subscribed_rooms)
+
+    if Enum.any?(user.subscribed_rooms, fn subscribed_room -> subscribed_room.id == room.id end) do
+      {:error, "User is already subscribed to this room"}
     else
-      nil -> {:error, "User or Room not found"}
+      {:ok, user}
+    end
+  end
+
+  defp subscribe_user(user, room) do
+    user = Repo.preload(user, :subscribed_rooms)
+
+    user
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:subscribed_rooms, [room | user.subscribed_rooms])
+    |> Repo.update()
+    |> case do
+      {:ok, _} -> {:ok, "Successfully subscribed to room"}
+      {:error, _} -> {:error, "Failed to subscribe to room"}
     end
   end
 end
