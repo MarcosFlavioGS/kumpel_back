@@ -8,7 +8,7 @@ defmodule KumpelBack.Rooms do
   alias KumpelBack.Rooms.List
   alias KumpelBack.Rooms.Delete
 
-  defdelegate create(params), to: Create, as: :call
+  defdelegate create(params, user_id), to: Create, as: :call
   defdelegate update(params), to: Update, as: :call
   defdelegate get(id), to: Get, as: :call
   defdelegate list(), to: List, as: :call

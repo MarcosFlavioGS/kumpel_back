@@ -11,7 +11,7 @@ defmodule KumpelBack.Users.User do
   @required_params_create [:name, :mail, :password]
   @required_params_update [:name, :mail]
 
-  @derive {Jason.Encoder, only: [:name, :mail, :created_rooms, :subscribed_rooms]}
+  @derive {Jason.Encoder, only: [:name, :mail, :created_rooms, :subscribed_rooms, :image_url]}
   schema "users" do
     field :name, :string
     field :mail, :string
@@ -20,6 +20,7 @@ defmodule KumpelBack.Users.User do
     field :failed_login_attempts, :integer, default: 0
     field :locked_until, :utc_datetime
     field :last_login, :utc_datetime
+    field :image_url, :string
 
     has_many :created_rooms, KumpelBack.Rooms.Room, foreign_key: :adm_id
 
@@ -30,7 +31,7 @@ defmodule KumpelBack.Users.User do
 
   def changeset(params) do
     %__MODULE__{}
-    |> cast(params, @required_params_create)
+    |> cast(params, @required_params_create ++ [:image_url])
     |> validate_required(@required_params_create)
     |> validate_format(:mail, ~r/@/)
     |> validate_length(:name, min: 2)
@@ -41,7 +42,7 @@ defmodule KumpelBack.Users.User do
 
   def changeset(user, params) do
     user
-    |> cast(params, @required_params_update)
+    |> cast(params, @required_params_update ++ [:image_url])
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
     |> unique_constraint(:mail)

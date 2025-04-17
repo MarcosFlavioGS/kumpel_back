@@ -19,7 +19,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   end
   """
   def create conn, params do
-    with {:ok, %Room{} = room} <- Rooms.create(params) do
+    with {:ok, %Room{} = room} <- Rooms.create(params, conn.assigns.user_id.user_id) do
       conn
       |> put_status(:created)
       |> render(:create, room: room)

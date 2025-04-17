@@ -4,7 +4,9 @@ defmodule KumpelBack.Rooms.Create do
   alias KumpelBack.Rooms.Room
   alias KumpelBack.Repo
 
-  def call(params) do
+  def call(params, user_id) do
+    params = Map.put(params, "adm_id", user_id)
+
     params
     |> Room.changeset()
     |> Repo.insert()

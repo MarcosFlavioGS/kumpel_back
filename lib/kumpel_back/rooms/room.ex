@@ -9,10 +9,11 @@ defmodule KumpelBack.Rooms.Room do
   @required_params_create [:name, :code, :adm_id]
   @required_params_update [:name, :code]
 
-  @derive {Jason.Encoder, only: [:name, :adm_id, :code, :subscribers]}
+  @derive {Jason.Encoder, only: [:name, :adm_id, :code, :subscribers, :image_url]}
   schema "rooms" do
     field :name, :string
     field :code, :string
+    field :image_url, :string
 
     belongs_to :adm, KumpelBack.Users.User, foreign_key: :adm_id
 
@@ -23,7 +24,7 @@ defmodule KumpelBack.Rooms.Room do
 
   def changeset(params) do
     %__MODULE__{}
-    |> cast(params, @required_params_create)
+    |> cast(params, @required_params_create ++ [:image_url])
     |> validate_required(@required_params_create)
     |> validate_length(:name, min: 2)
     |> validate_length(:code, min: 6)
@@ -32,7 +33,7 @@ defmodule KumpelBack.Rooms.Room do
 
   def changeset(room, params) do
     room
-    |> cast(params, @required_params_update)
+    |> cast(params, @required_params_update ++ [:image_url])
     |> validate_required(@required_params_update)
     |> validate_length(:name, min: 2)
     |> validate_length(:code, min: 6)

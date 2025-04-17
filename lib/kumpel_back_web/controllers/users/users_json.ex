@@ -25,6 +25,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
       id: user.id,
       name: user.name,
       mail: user.mail,
+      image: user.image_url,
       created_rooms:
         Enum.map(user.created_rooms, fn room ->
           %{
