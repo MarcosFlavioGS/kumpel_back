@@ -60,7 +60,6 @@ defmodule KumpelBackWeb.Router do
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
     options "/users", Users.UsersController, :options
-    
   end
 
   # Other scopes may use custom stacks.

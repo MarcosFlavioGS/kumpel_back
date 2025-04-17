@@ -8,9 +8,8 @@ defmodule KumpelBackWeb.Subscription.SubscriptionJSON do
   """
   def subscribe(%{message: message}) do
     %{
-	  status: :ok,
-	  message: message
-	}
+      status: :ok,
+      message: message
+    }
   end
-	
 end

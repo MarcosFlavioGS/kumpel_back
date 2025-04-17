@@ -18,5 +18,4 @@ defmodule KumpelBackWeb.Subscription.FallbackController do
     |> put_view(json: KumpelBackWeb.Subscription.ErrorJSON)
     |> render(:error, %{status: :bad_request, message: "User is already subscribed to the room"})
   end
-
 end

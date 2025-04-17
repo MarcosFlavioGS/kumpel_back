@@ -4,10 +4,9 @@ defmodule KumpelBackWeb.Subscription.ErrorJSON do
   """
 
   def error(%{status: status, message: message}) do
-	%{
-	  status: status,
-	  message: message
-	}
+    %{
+      status: status,
+      message: message
+    }
   end
-	
 end

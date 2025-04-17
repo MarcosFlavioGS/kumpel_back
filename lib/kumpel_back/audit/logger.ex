@@ -78,7 +78,7 @@ defmodule KumpelBack.Audit.Logger do
   end
 
   defp get_ip_address do
-    #TODO: This should be implemented to get the actual IP address from the connection
+    # TODO: This should be implemented to get the actual IP address from the connection
     # For now, returning a placeholder
     "127.0.0.1"
   end
