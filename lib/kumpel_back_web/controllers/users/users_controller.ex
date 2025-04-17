@@ -8,6 +8,9 @@ defmodule KumpelBackWeb.Users.UsersController do
   alias KumpelBack.Users
   alias Users.User
 
+  alias KumpelBackWeb.Token
+  alias KumpelBack.Audit.Logger
+
   action_fallback KumpelBackWeb.Users.FallbackController
 
   @doc """
@@ -20,9 +23,13 @@ defmodule KumpelBackWeb.Users.UsersController do
   """
   def create(conn, params) do
     with {:ok, %User{} = user} <- Users.create(params) do
+      token = Token.sign(user)
+
+      Logger.log_successful_login(user.id)
+
       conn
       |> put_status(:created)
-      |> render(:create, user: user)
+      |> render(:create, %{user: user, token: token})
     end
   end
 
@@ -51,6 +58,21 @@ defmodule KumpelBackWeb.Users.UsersController do
   def show(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- Users.get(id) do
       conn
+      |> put_status(:ok)
+      |> render(:get, user: user)
+    end
+  end
+
+  @doc """
+  current/2
+
+  params:
+  - conn: Plug.conn
+  - _params
+  """
+  def current(conn, _params) do
+    with {:ok, %User{} = user} <- Users.get(conn.assigns.user_id.user_id) do
+    	conn
       |> put_status(:ok)
       |> render(:get, user: user)
     end

@@ -8,11 +8,12 @@ defmodule KumpelBackWeb.Users.UsersJSON do
     Receives an user struct and returns the map containing a message, the user and the room id.
     data
   """
-  def create(%{user: user}) do
+  def create(%{user: user, token: token}) do
     %{
       message: "User created !",
       id: user.id,
-      data: user
+      data: user,
+      token: token
     }
   end
 

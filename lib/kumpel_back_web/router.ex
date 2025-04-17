@@ -34,15 +34,17 @@ defmodule KumpelBackWeb.Router do
 
     # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:show, :index]
-    options "/rooms", Rooms.RoomsController, :options
 
     # Users
     resources "/users", Users.UsersController, only: [:create, :show, :index]
-    options "/users", Users.UsersController, :options
-    options "/users/:id", Users.UsersController, :options
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
+
+    # Options controllers
+    options "/rooms", Rooms.RoomsController, :options
+    options "/users", Users.UsersController, :options
+    options "/users/:id", Users.UsersController, :options
     options "/auth/login", Auth.AuthController, :options
   end
 
@@ -52,13 +54,17 @@ defmodule KumpelBackWeb.Router do
 
     # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
-    options "/rooms", Rooms.RoomsController, :options
 
     post "/rooms/:room_id/subscription", Subscription.SubscriptionController, :subscribe
-    options "/rooms/:room_id/subscription", Subscription.SubscriptionController, :options
 
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
+    get "/currentUser", Users.UsersController, :current
+
+    # Options controllers
+    options "/rooms", Rooms.RoomsController, :options
+    options "/rooms/:room_id/subscription", Subscription.SubscriptionController, :options
+    options "/currentUser", Users.UsersController, :options
     options "/users", Users.UsersController, :options
   end
 
