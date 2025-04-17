@@ -18,7 +18,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   - params: %Room{}
   end
   """
-  def create conn, params do
+  def create(conn, params) do
     with {:ok, %Room{} = room} <- Rooms.create(params, conn.assigns.user_id.user_id) do
       conn
       |> put_status(:created)
