@@ -6,11 +6,14 @@ defmodule KumpelBack.Subscription.Subscribe do
   alias KumpelBack.Users.User
   alias KumpelBack.Rooms.Room
 
-  def call(user, room_id) do
+  def call(user, params) do
     with {:ok, user} <- get_user(user),
-         {:ok, room} <- get_room(room_id),
+         {:ok, room} <- get_room(params["room_id"]),
+         {:ok, _message} <- verify_code(params["code"], room.code),
          {:ok, _} <- check_subscription(user, room) do
       subscribe_user(user, room)
+    else
+      {:error, message} -> {:error, message}
     end
   end
 
@@ -25,6 +28,13 @@ defmodule KumpelBack.Subscription.Subscribe do
     case Repo.get(Room, room_id) do
       nil -> {:error, "Room not found"}
       room -> {:ok, room}
+    end
+  end
+
+  defp verify_code(code, room_code) do
+    case code == room_code do
+    	true -> {:ok, "Code validated"}
+    	false -> {:error, "Incorect access code"}	
     end
   end
 

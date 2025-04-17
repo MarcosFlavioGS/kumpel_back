@@ -4,5 +4,5 @@ defmodule KumpelBack.Subscription do
   """
   alias KumpelBack.Subscription.Subscribe
 
-  defdelegate subscribe(user, room_id), to: Subscribe, as: :call
+  defdelegate subscribe(user, params), to: Subscribe, as: :call
 end

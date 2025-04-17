@@ -54,8 +54,7 @@ defmodule KumpelBackWeb.Router do
 
     # Rooms
     resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
-
-    post "/rooms/:room_id/subscription", Subscription.SubscriptionController, :subscribe
+    post "/rooms/subscribe", Subscription.SubscriptionController, :subscribe
 
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
@@ -63,7 +62,7 @@ defmodule KumpelBackWeb.Router do
 
     # Options controllers
     options "/rooms", Rooms.RoomsController, :options
-    options "/rooms/:room_id/subscription", Subscription.SubscriptionController, :options
+    options "/rooms/subscribe", Subscription.SubscriptionController, :options
     options "/currentUser", Users.UsersController, :options
     options "/users", Users.UsersController, :options
   end

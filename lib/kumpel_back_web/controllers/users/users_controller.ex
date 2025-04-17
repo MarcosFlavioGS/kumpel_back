@@ -72,7 +72,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   """
   def current(conn, _params) do
     with {:ok, %User{} = user} <- Users.get(conn.assigns.user_id.user_id) do
-    	conn
+      conn
       |> put_status(:ok)
       |> render(:get, user: user)
     end
