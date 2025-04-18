@@ -4,7 +4,7 @@ defmodule KumpelBack.MixProject do
   def project do
     [
       app: :kumpel_back,
-      version: "0.11.0",
+      version: "1.0.0",
       elixir: "~> 1.17.3",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
