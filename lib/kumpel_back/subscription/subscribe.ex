@@ -31,8 +31,8 @@ defmodule KumpelBack.Subscription.Subscribe do
 
   defp verify_code(code, room_code) do
     case code == room_code do
-    	true -> {:ok, "Code validated"}
-    	false -> {:error, "Incorect access code"}	
+      true -> {:ok, "Code validated"}
+      false -> {:error, "Incorect access code"}
     end
   end
 
