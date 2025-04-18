@@ -9,7 +9,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   alias KumpelBack.Audit.Logger
 
   @max_message_length 1000
-  @max_messages_per_minute 30
+  @max_messages_per_minute 200
   @max_connections_per_room 100
 
   @doc """
