@@ -11,17 +11,18 @@ defmodule KumpelBack.Users.Get do
   	Retrieves an User
   """
   def call(id) do
-    query = from u in User,
-      where: u.id == ^id,
-      left_join: sr in assoc(u, :subscribed_rooms),
-      left_join: srs in assoc(sr, :subscribers),
-      left_join: cr in assoc(u, :created_rooms),
-      left_join: crs in assoc(cr, :subscribers),
-      preload: [
-      subscribed_rooms: {sr, subscribers: srs},
-      created_rooms: {cr, subscribers: crs}
-      ],
-      select: u
+    query =
+      from u in User,
+        where: u.id == ^id,
+        left_join: sr in assoc(u, :subscribed_rooms),
+        left_join: srs in assoc(sr, :subscribers),
+        left_join: cr in assoc(u, :created_rooms),
+        left_join: crs in assoc(cr, :subscribers),
+        preload: [
+          subscribed_rooms: {sr, subscribers: srs},
+          created_rooms: {cr, subscribers: crs}
+        ],
+        select: u
 
     case Repo.one(query) do
       nil ->
