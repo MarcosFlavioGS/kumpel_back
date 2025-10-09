@@ -17,7 +17,7 @@ defmodule KumpelBackWeb.Token do
   Signs a new access token for a user.
   """
   def sign(user) do
-    Token.sign(Endpoint, @sign_salt <> user.id, %{
+    Token.sign(Endpoint, @sign_salt, %{
       user_id: user.id,
       user_mail: user.mail,
       exp: System.system_time(:second) + @access_token_expiry
@@ -28,7 +28,7 @@ defmodule KumpelBackWeb.Token do
   Signs a new refresh token for a user.
   """
   def sign_refresh(user) do
-    Token.sign(Endpoint, @refresh_salt <> user.id, %{
+    Token.sign(Endpoint, @refresh_salt, %{
       user_id: user.id,
       user_mail: user.mail,
       exp: System.system_time(:second) + @refresh_token_expiry
