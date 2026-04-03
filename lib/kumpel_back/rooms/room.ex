@@ -9,8 +9,7 @@ defmodule KumpelBack.Rooms.Room do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
-  @required_params_create [:name, :code, :adm_id]
-  @required_params_update [:name, :code]
+  @cast_create [:name, :adm_id, :code, :image_url]
 
   @derive {Jason.Encoder, only: [:id, :name, :adm_id, :code, :subscribers, :image_url]}
   schema "rooms" do
@@ -27,18 +26,20 @@ defmodule KumpelBack.Rooms.Room do
 
   def changeset(params) do
     %__MODULE__{}
-    |> cast(params, @required_params_create ++ [:image_url])
-    |> validate_required(@required_params_create)
+    |> cast(params, @cast_create)
+    |> validate_required([:name, :adm_id, :code])
     |> validate_length(:name, min: 2)
-    |> validate_length(:code, min: 6)
+    |> validate_length(:code, min: 8, max: 32)
     |> foreign_key_constraint(:adm_id)
+    |> unique_constraint(:code)
   end
 
   def changeset(room, params) do
     room
-    |> cast(params, @required_params_update ++ [:image_url])
-    |> validate_required(@required_params_update)
+    |> cast(params, [:name, :code, :image_url])
+    |> validate_required([:name])
     |> validate_length(:name, min: 2)
-    |> validate_length(:code, min: 6)
+    |> validate_length(:code, min: 6, max: 32)
+    |> unique_constraint(:code)
   end
 end

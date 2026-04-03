@@ -24,7 +24,14 @@ defmodule KumpelBackWeb.Rooms.ErrorJSON do
     }
   end
 
-  # Create
+  def error(%{status: :service_unavailable, message: message}) do
+    %{
+      status: :service_unavailable,
+      message: message
+    }
+  end
+
+  # Create / update validation
   def error(%{changeset: changeset}) do
     %{
       errors: Ecto.Changeset.traverse_errors(changeset, &translate_errors/1)

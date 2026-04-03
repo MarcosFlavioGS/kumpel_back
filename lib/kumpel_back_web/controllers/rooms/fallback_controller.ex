@@ -13,6 +13,16 @@ defmodule KumpelBackWeb.Rooms.FallbackController do
     |> render(:error, status: :not_found)
   end
 
+  def call(conn, {:error, :room_code_allocation_failed}) do
+    conn
+    |> put_status(:service_unavailable)
+    |> put_view(json: KumpelBackWeb.Rooms.ErrorJSON)
+    |> render(:error, %{
+      status: :service_unavailable,
+      message: "Could not assign a unique room code. Please try again."
+    })
+  end
+
   def call(conn, {:error, changeset}) do
     conn
     |> put_status(:bad_request)
