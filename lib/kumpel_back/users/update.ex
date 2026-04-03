@@ -18,7 +18,7 @@ defmodule KumpelBack.Users.Update do
     |> case do
       {:ok, user} ->
         # Preload associations here so the controller doesn't need to handle it
-        {:ok, Repo.preload(user, created_rooms: [:subscribers])}
+        {:ok, Repo.preload(user, [:created_rooms, :subscribed_rooms])}
 
       error ->
         error

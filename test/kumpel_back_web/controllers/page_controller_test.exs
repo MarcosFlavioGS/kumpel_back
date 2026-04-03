@@ -3,6 +3,7 @@ defmodule KumpelBackWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")
-    assert html_response(conn, 200) =~ "Peace of mind from prototype to production"
+    assert html_response(conn, 200) =~ "KumpelBack"
+    assert html_response(conn, 200) =~ "chat_input"
   end
 end

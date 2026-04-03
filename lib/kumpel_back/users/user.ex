@@ -14,7 +14,8 @@ defmodule KumpelBack.Users.User do
   @required_params_create [:name, :mail, :password]
   @required_params_update [:name, :mail]
 
-  @derive {Jason.Encoder, only: [:id, :name, :mail, :created_rooms, :subscribed_rooms, :image_url]}
+  @derive {Jason.Encoder,
+           only: [:id, :name, :mail, :created_rooms, :subscribed_rooms, :image_url]}
   schema "users" do
     field :name, :string
     field :mail, :string

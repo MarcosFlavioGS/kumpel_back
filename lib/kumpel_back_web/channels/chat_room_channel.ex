@@ -85,7 +85,7 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       :ok ->
         case check_rate_limit(socket) do
           :ok ->
-            sanitized_message = sanitize_message(payload)
+            sanitized_message = sanitize_shout_payload(payload)
             broadcast(socket, "shout", sanitized_message)
             {:noreply, socket}
 
@@ -174,4 +174,10 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   end
 
   defp sanitize_message(message), do: message
+
+  defp sanitize_shout_payload(%{"body" => body} = payload) when is_binary(body) do
+    Map.put(payload, "body", sanitize_message(body))
+  end
+
+  defp sanitize_shout_payload(payload), do: payload
 end
