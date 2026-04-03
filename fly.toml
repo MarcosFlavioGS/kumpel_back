@@ -4,7 +4,8 @@
 #
 
 app = 'kumpel-back'
-primary_region = 'gig'
+# `gig` is deprecated on Fly.io; use e.g. `gru` (São Paulo) for Brazil — see fly regions list
+primary_region = 'gru'
 kill_signal = 'SIGTERM'
 
 [build]
