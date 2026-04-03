@@ -12,7 +12,7 @@ defmodule KumpelBack.Users.Delete do
   def call(id) do
     case Repo.get(User, id) do
       nil ->
-        {:error, "User not found"}
+        {:error, :not_found}
 
       user ->
         Repo.delete(user)
