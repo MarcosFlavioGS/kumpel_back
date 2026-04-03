@@ -10,49 +10,14 @@ defmodule KumpelBackWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  pipeline :auth do
-    plug KumpelBackWeb.Plugs.Auth
-  end
-
   scope "/", KumpelBackWeb do
     pipe_through :browser
 
     get "/", PageController, :home
   end
 
-  # Authentication disabled
-  scope "/api", KumpelBackWeb do
-    pipe_through :api
-
-    # Health
-    get "/health", Health.HealthController, :index
-
-    # Rooms
-    resources "/rooms", Rooms.RoomsController, only: [:show, :index]
-
-    # Users
-    resources "/users", Users.UsersController, only: [:create, :show, :index]
-
-    # Auth
-    post "/auth/login", Auth.AuthController, :login
-  end
-
-  # Authentication enabled
-  scope "/api", KumpelBackWeb do
-    pipe_through [:api, :auth]
-
-    # Rooms
-    resources "/rooms", Rooms.RoomsController, only: [:create, :update, :delete]
-    post "/rooms/subscribe", Subscription.SubscriptionController, :subscribe
-
-    # Users
-    resources "/users", Users.UsersController, only: [:update, :delete]
-    get "/currentUser", Users.UsersController, :current
-  end
+  # API — see `KumpelBackWeb.ApiRouter`
+  forward "/api", KumpelBackWeb.ApiRouter
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:kumpel_back, :dev_routes) do

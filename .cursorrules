@@ -43,7 +43,7 @@
 - **Migrations**: Live under `priv/repo/migrations/`; keep schema fields and migrations in sync; prefer safe, additive migrations for production.
 
 ### Phoenix (controllers, routes, JSON)
-- **Router** (`KumpelBackWeb.Router`): Two scopes — **public** `[:api]` (health, selected room/user reads, login) and **authenticated** `[:api, :auth]` (mutations, `currentUser`, subscribe). Preserve this split when adding routes.
+- **Router**: `KumpelBackWeb.Router` forwards **`/api`** to `KumpelBackWeb.ApiRouter`. **`ApiRouter`** defines two scopes — **public** `[:api]` (health, selected room/user reads, login) and **authenticated** `[:api, :auth]` (mutations, `currentUser`, subscribe). Preserve this split when adding API routes.
 - **Controllers**: Use `action_fallback` to `*FallbackController`; success/error JSON in `*Json` / `ErrorJSON` modules under the same feature folder.
 - **REST**: Follow existing status usage (`:created`, `:ok`, `:not_found`, `:bad_request`, `:unauthorized`, `:too_many_requests` where already used).
 - **CORS**: `CORSPlug` on **`KumpelBackWeb.Endpoint`** (before `Router`); `config :cors_plug` for origins/methods/headers — no per-path `OPTIONS` routes.
