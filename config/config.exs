@@ -9,7 +9,7 @@ import Config
 
 config :kumpel_back,
   ecto_repos: [KumpelBack.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime, binary_id: true]
 
 # Configures the endpoint
 config :kumpel_back, KumpelBackWeb.Endpoint,

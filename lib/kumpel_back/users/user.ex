@@ -8,10 +8,13 @@ defmodule KumpelBack.Users.User do
 
   alias KumpelBack.Users.Password
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   @required_params_create [:name, :mail, :password]
   @required_params_update [:name, :mail]
 
-  @derive {Jason.Encoder, only: [:name, :mail, :created_rooms, :subscribed_rooms, :image_url]}
+  @derive {Jason.Encoder, only: [:id, :name, :mail, :created_rooms, :subscribed_rooms, :image_url]}
   schema "users" do
     field :name, :string
     field :mail, :string
