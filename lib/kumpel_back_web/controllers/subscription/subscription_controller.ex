@@ -9,7 +9,7 @@ defmodule KumpelBackWeb.Subscription.SubscriptionController do
 
   action_fallback KumpelBackWeb.Subscription.FallbackController
 
-  def subscribe(conn, %{"room_id" => _room_id, "code" => _code} = params) do
+  def subscribe(conn, %{"code" => _code, "name" => _name} = params) do
     with {:ok, message} <- Subscription.subscribe(conn.assigns.user_id, params) do
       conn
       |> put_status(:ok)

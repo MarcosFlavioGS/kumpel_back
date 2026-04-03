@@ -1,0 +1,98 @@
+### Project overview
+- **Domain**: Group chat backend — users, password auth, rooms with join codes, room subscriptions, real-time chat over Phoenix Channels.
+- **Tech stack**: Elixir `~> 1.18`, Phoenix `~> 1.7`, Ecto (PostgreSQL), Jason, Argon2, Bandit, Swoosh + Finch, CORS Plug, Cachex. **No** Absinthe/GraphQL, **no** Oban in current codebase.
+- **Conventions**:
+  - Business logic and persistence live under `KumpelBack.*` (context facades + `Domain.Action` modules with `call/1` or `call/2`).
+  - HTTP, channels, plugs, and JSON views live under `KumpelBackWeb.*`.
+  - Prefer small, incremental changes; match existing patterns (facades, `with` in controllers, `action_fallback`).
+- **Reference docs**:
+  - **`doc/project_analysis.md`** — architecture, route map, data model, gaps, conventions.
+  - **`doc/contexts/README.md`** — index of per-feature docs (authentication, tokens, channels, HTTP layer, controllers by area, logging). Use the linked files when working in that area.
+
+### Documentation maintenance
+- **When to update**: After tasks or features change **behavior**, **public contracts** (JSON shapes, HTTP status codes, route paths), **auth/token rules**, **channel events or join rules**, **audit/security logging**, or other material details reflected in docs.
+- **What to update**:
+  - **`doc/project_analysis.md`** — if the change affects overall architecture, global conventions, route split, stack, or known gaps.
+  - **`doc/contexts/<topic>.md`** — the file(s) that describe the touched feature (e.g. `authentication.md`, `controllers-users.md`, `channels.md`). Add a new `doc/contexts/<name>.md` and a row in **`doc/contexts/README.md`** when introducing a major new feature area.
+- **PR / review expectation**: Documentation updates belong in the same change as the code when the behavior is user- or integrator-visible; at minimum, leave the docs consistent before merge.
+
+### Architecture & design
+- **Facades**: Top-level modules `KumpelBack.Users`, `KumpelBack.Rooms`, `KumpelBack.Subscription` delegate to submodules (e.g. `Users.Create`, `Rooms.Authorize`) via `defdelegate ... to: ..., as: :call`. New domain operations should follow this pattern.
+- **Layers** (pragmatic — this repo does not use a separate repository/integration layer):
+  - **WEB** (`KumpelBackWeb`): Parse HTTP params; call facade/context functions; render JSON or channel replies; **no** heavy business rules or direct multi-step DB orchestration that belongs in `KumpelBack`.
+  - **Context / domain** (`KumpelBack.*`): Changesets, Repo usage, authorization helpers (`Rooms.Authorize`), subscription flow (`Subscription.Subscribe`). Prefer `{:ok, _}` / `{:error, _}`.
+  - **Schemas** (`Users.User`, `Rooms.Room`): Data shape, changesets, associations; keep embedded validation here; cross-entity rules in domain modules.
+- **Repositories**: The project uses **`KumpelBack.Repo` directly** in domain modules — do not introduce a parallel `Hermes.Data.Repositories`-style layer unless the team explicitly migrates to it.
+- **Patterns**
+  - Extend existing facades and `call` modules before adding parallel modules.
+  - Prefer pure functions for transforms; keep Repo and Cachex side effects in domain or channel helpers explicitly.
+  - Avoid “god” modules; split new behavior into focused `Domain.Action` files.
+
+### Coding style & tools
+- **General style**: Follow `.formatter.exs` (`mix format`). Use pipelines and `with` where the codebase already does.
+- **Credo**: Project includes Credo; avoid new complexity/unused code issues in touched files.
+- **Naming**: Domain-specific names; match existing spelling in APIs (`mail`, `adm_id`) for consistency.
+- **Specs**: Add `@spec` where it clarifies public `call` functions or non-obvious returns.
+
+### Data structures & validation
+- **Input**: Request params are maps/strings; schemas use **Ecto changesets** — not a separate PayloadStruct layer.
+- **Returns**: Standardize on `{:ok, result}` / `{:error, reason}`; controllers rely on **`action_fallback`** modules to map errors to JSON and HTTP status.
+
+### Data & persistence (Ecto)
+- **Schemas**: `KumpelBack.Users.User`, `KumpelBack.Rooms.Room` with `changeset/1` (create) and `changeset/2` (update) where applicable.
+- **Migrations**: Live under `priv/repo/migrations/`; keep schema fields and migrations in sync; prefer safe, additive migrations for production.
+
+### Phoenix (controllers, routes, JSON)
+- **Router** (`KumpelBackWeb.Router`): Two scopes — **public** `[:api]` (health, selected room/user reads, login) and **authenticated** `[:api, :auth]` (mutations, `currentUser`, subscribe). Preserve this split when adding routes.
+- **Controllers**: Use `action_fallback` to `*FallbackController`; success/error JSON in `*Json` / `ErrorJSON` modules under the same feature folder.
+- **REST**: Follow existing status usage (`:created`, `:ok`, `:not_found`, `:bad_request`, `:unauthorized`, `:too_many_requests` where already used).
+- **OPTIONS**: Several routes expose `options/2` for CORS; keep behavior aligned with `cors_plug` config.
+
+### Phoenix Channels (real-time)
+- **Socket**: `UserSocket` at `/socket`; channel `chat_room:*` → `ChatRoomChannel`.
+- **Join**: Authorization via `KumpelBack.Rooms.Authorize` and room codes; connection limits via Cachex (`:room_connections`).
+- **Messages**: Rate limiting (`:rate_limit_cache`), length limits, and HTML sanitization live in `ChatRoomChannel` — extend here or via small private/domain helpers consistently.
+- **Security**: Socket `connect/3` is currently permissive; document and preserve behavior unless explicitly changing auth strategy (see **`doc/project_analysis.md`** and **`doc/contexts/channels.md`**).
+
+### Integrations & external services
+- **Email**: Swoosh + Finch; production adapter belongs in `runtime.exs` / prod config.
+- **HTTP**: No shared “integrations” namespace yet; if adding outbound HTTP, isolate clients in dedicated modules and call them from domain code, not from controllers/channels directly when logic grows.
+
+### Background jobs & async work
+- **No Oban** in current dependencies. If background work is added, prefer **Oban** with workers under a clear namespace and domain functions for side effects.
+
+### Testing (ExUnit)
+- **Support**: `KumpelBack.DataCase`, `KumpelBackWeb.ConnCase`, `KumpelBackWeb.ChannelCase`.
+- **Principles**: For behavior changes, add or update tests under `test/kumpel_back/` and `test/kumpel_back_web/`; use Sandbox for DB; avoid real HTTP unless adding integration tests deliberately.
+- **Style**: `describe` blocks, tuple assertions matching return conventions.
+
+### Code review behavior (for the AI assistant)
+- Prioritize **correctness**, **auth boundaries**, and **channel safety** (injection, rate limits).
+- Protect **JSON shapes** and **route paths** from accidental breaking changes; call out migrations that need deploy ordering.
+- Prefer **minimal diffs** aligned with facade + `call` + fallback patterns.
+
+### Refactoring & migrations
+- Outline multi-step plans for non-trivial refactors; keep behavior unless the user asks otherwise.
+- Destructive DB changes: prefer multi-step migrations (add → backfill → enforce).
+
+### Configuration and environment
+- **Secrets and env-dependent values**: Use **`config/runtime.exs`** for production (`DATABASE_URL`, `SECRET_KEY_BASE`, etc.), not compile-time `System.get_env` in `config.exs` for secrets.
+- **CORS / `check_origin`**: Update `config/config.exs` when adding new front-end origins.
+
+### PR / pre-submit checklist
+- New domain logic behind `KumpelBack.*` facades or clearly named `call` modules.
+- Controllers/channels thin; errors go through fallbacks or explicit `{:error, _}` handling.
+- Changesets for user-controlled persistence; migrations if schema changes.
+- Tests updated or added for new public behavior where feasible.
+- **Docs**: Update **`doc/project_analysis.md`** and/or **`doc/contexts/*.md`** (and **`doc/contexts/README.md`** if adding a new doc file) when the change alters documented behavior or contracts (see **Documentation maintenance**).
+
+### Agent interaction rules
+- Be concise and technical; state assumptions briefly.
+- When editing code, explain **intent** at a high level, not line-by-line.
+- **Read `doc/project_analysis.md`** when architecture, routes, or security context is unclear; **read the relevant `doc/contexts/` file** for feature-specific workflows.
+- After substantive feature or contract changes, **update documentation in the same task** per **Documentation maintenance**.
+- Apply these rules for: code reviews, tests, new endpoints, channels, and domain modules.
+
+### Commit messages
+- Short, conventional: `type(scope): description` (e.g. `fix(channels): cap lobby connections`).
+- Avoid long bodies unless necessary.

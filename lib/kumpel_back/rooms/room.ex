@@ -6,10 +6,13 @@ defmodule KumpelBack.Rooms.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+
   @required_params_create [:name, :code, :adm_id]
   @required_params_update [:name, :code]
 
-  @derive {Jason.Encoder, only: [:name, :adm_id, :code, :subscribers, :image_url]}
+  @derive {Jason.Encoder, only: [:id, :name, :adm_id, :code, :subscribers, :image_url]}
   schema "rooms" do
     field :name, :string
     field :code, :string
