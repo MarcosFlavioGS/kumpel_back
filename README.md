@@ -1,6 +1,6 @@
 # Kumpel Chat
 
-A secure, real-time chat application built with Phoenix and Elixir, featuring robust security measures and modern architecture.
+A secure, real-time chat application built with Phoenix and Elixir, featuring robust security measures and modern architecture
 
 ![Elixir](https://img.shields.io/badge/Elixir-1.15-blue)
 ![Phoenix](https://img.shields.io/badge/Phoenix-1.7-green)
