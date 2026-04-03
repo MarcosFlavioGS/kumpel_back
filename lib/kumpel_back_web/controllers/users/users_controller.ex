@@ -106,10 +106,4 @@ defmodule KumpelBackWeb.Users.UsersController do
       |> render(:delete, user: user)
     end
   end
-
-  def options(conn, _params) do
-    conn
-    |> put_resp_header("access-control-allow-methods", "POST, GET, OPTIONS")
-    |> send_resp(200, "")
-  end
 end

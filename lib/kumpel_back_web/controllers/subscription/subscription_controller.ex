@@ -16,13 +16,4 @@ defmodule KumpelBackWeb.Subscription.SubscriptionController do
       |> render(:subscribe, message: message)
     end
   end
-
-  @doc """
-  handle Next.js options request
-  """
-  def options(conn, _params) do
-    conn
-    |> put_resp_header("access-control-allow-methods", "POST, OPTIONS")
-    |> send_resp(200, "")
-  end
 end

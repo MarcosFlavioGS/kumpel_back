@@ -29,7 +29,11 @@ config :kumpel_back, KumpelBackWeb.Endpoint,
 
 # Configure CORS
 config :cors_plug,
-  origin: ["http://localhost:3000", "https://kumpel-chat.vercel.app"],
+  origin: [
+    "http://localhost:3000",
+    "https://kumpel-chat.vercel.app",
+    "https://your-app.fly.dev"
+  ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   headers: ["Authorization", "Content-Type", "Accept"]
 

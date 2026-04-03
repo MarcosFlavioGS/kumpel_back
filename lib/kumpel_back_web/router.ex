@@ -12,7 +12,6 @@ defmodule KumpelBackWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug CORSPlug
   end
 
   pipeline :auth do
@@ -40,12 +39,6 @@ defmodule KumpelBackWeb.Router do
 
     # Auth
     post "/auth/login", Auth.AuthController, :login
-
-    # Options controllers
-    options "/rooms", Rooms.RoomsController, :options
-    options "/users", Users.UsersController, :options
-    options "/users/:id", Users.UsersController, :options
-    options "/auth/login", Auth.AuthController, :options
   end
 
   # Authentication enabled
@@ -59,12 +52,6 @@ defmodule KumpelBackWeb.Router do
     # Users
     resources "/users", Users.UsersController, only: [:update, :delete]
     get "/currentUser", Users.UsersController, :current
-
-    # Options controllers
-    options "/rooms", Rooms.RoomsController, :options
-    options "/rooms/subscribe", Subscription.SubscriptionController, :options
-    options "/currentUser", Users.UsersController, :options
-    options "/users", Users.UsersController, :options
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

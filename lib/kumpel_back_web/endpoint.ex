@@ -53,5 +53,10 @@ defmodule KumpelBackWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  # Before Router so CORS preflight (OPTIONS) is handled without a matching route.
+  # See https://hexdocs.pm/cors_plug
+  plug CORSPlug
+
   plug KumpelBackWeb.Router
 end

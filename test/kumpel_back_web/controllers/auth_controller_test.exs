@@ -61,10 +61,16 @@ defmodule KumpelBackWeb.Auth.AuthControllerTest do
     end
   end
 
-  describe "options/2" do
-    test "responds to OPTIONS" do
-      conn = options(build_conn(), ~p"/api/auth/login")
-      assert conn.status == 200
+  describe "CORS preflight" do
+    test "OPTIONS with preflight headers returns 204 and CORS headers" do
+      conn =
+        build_conn()
+        |> put_req_header("origin", "http://localhost:3000")
+        |> put_req_header("access-control-request-method", "POST")
+        |> options(~p"/api/auth/login")
+
+      assert conn.status == 204
+      assert get_resp_header(conn, "access-control-allow-origin") == ["http://localhost:3000"]
     end
   end
 end
