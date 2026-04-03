@@ -50,7 +50,10 @@ defmodule KumpelBack.UsersTest do
 
     test "returns not_found for unknown mail" do
       assert {:error, :not_found} =
-               Users.login(%{"mail" => "missing@example.com", "password" => TestFixtures.valid_password()})
+               Users.login(%{
+                 "mail" => "missing@example.com",
+                 "password" => TestFixtures.valid_password()
+               })
     end
 
     test "returns unauthorized for wrong password" do
