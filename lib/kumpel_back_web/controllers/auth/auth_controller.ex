@@ -23,6 +23,7 @@ defmodule KumpelBackWeb.Auth.AuthController do
   - conn: Plug.conn
   - %{"mail" => mail, "password" => password}
   """
+  @spec login(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def login(conn, params) do
     case check_rate_limit(params["mail"]) do
       :ok ->

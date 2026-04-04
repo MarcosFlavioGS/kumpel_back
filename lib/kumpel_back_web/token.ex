@@ -6,6 +6,8 @@ defmodule KumpelBackWeb.Token do
   alias KumpelBackWeb.Endpoint
   alias Phoenix.Token
 
+  alias KumpelBack.Users.User
+
   @sign_salt "Kumpel_User"
   @refresh_salt "Kumpel_Refresh"
   # 1 hour in seconds
@@ -13,9 +15,16 @@ defmodule KumpelBackWeb.Token do
   # 30 days in seconds
   @refresh_token_expiry 2_592_000
 
+  @type claims :: %{
+          required(:user_id) => String.t(),
+          required(:user_mail) => String.t(),
+          required(:exp) => integer()
+        }
+
   @doc """
   Signs a new access token for a user.
   """
+  @spec sign(User.t()) :: binary()
   def sign(user) do
     Token.sign(Endpoint, @sign_salt, %{
       user_id: user.id,
@@ -27,6 +36,7 @@ defmodule KumpelBackWeb.Token do
   @doc """
   Signs a new refresh token for a user.
   """
+  @spec sign_refresh(User.t()) :: binary()
   def sign_refresh(user) do
     Token.sign(Endpoint, @refresh_salt, %{
       user_id: user.id,
@@ -39,6 +49,7 @@ defmodule KumpelBackWeb.Token do
   Verifies an access token and checks its expiration.
   Returns {:ok, data} if valid, {:error, reason} if invalid.
   """
+  @spec verify(String.t() | binary()) :: {:ok, claims()} | {:error, term()}
   def verify(token) do
     case Token.verify(Endpoint, @sign_salt, token, max_age: @access_token_expiry) do
       {:ok, data} -> {:ok, data}
@@ -51,6 +62,7 @@ defmodule KumpelBackWeb.Token do
   Verifies a refresh token and checks its expiration.
   Returns {:ok, data} if valid, {:error, reason} if invalid.
   """
+  @spec verify_refresh(String.t() | binary()) :: {:ok, claims()} | {:error, term()}
   def verify_refresh(token) do
     case Token.verify(Endpoint, @refresh_salt, token, max_age: @refresh_token_expiry) do
       {:ok, data} -> {:ok, data}

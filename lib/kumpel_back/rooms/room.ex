@@ -24,6 +24,9 @@ defmodule KumpelBack.Rooms.Room do
     timestamps()
   end
 
+  @type t :: %__MODULE__{}
+
+  @spec changeset(map()) :: Ecto.Changeset.t()
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @cast_create)
@@ -34,6 +37,7 @@ defmodule KumpelBack.Rooms.Room do
     |> unique_constraint(:code)
   end
 
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(room, params) do
     room
     |> cast(params, [:name, :code, :image_url])

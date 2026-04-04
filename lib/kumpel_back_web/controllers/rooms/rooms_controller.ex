@@ -18,6 +18,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   - params: %Room{}
   end
   """
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do
     with {:ok, %Room{} = room} <- Rooms.create(params, conn.assigns.user_id.user_id) do
       conn
@@ -33,6 +34,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   - conn: Plug.conn
   - %{"id" => id, ..params}
   """
+  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def update(conn, params) do
     with {:ok, room} <- Rooms.update(params) do
       conn
@@ -48,6 +50,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   - conn: Plug.conn
   - %{"id" => id}
   """
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     with {:ok, %Room{} = room} <- Rooms.get(id) do
       conn
@@ -62,6 +65,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   params:
   - conn: Plug.conn
   """
+  @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, %{}) do
     with {:ok, [%Room{} | _] = rooms} <- Rooms.list() do
       conn
@@ -77,6 +81,7 @@ defmodule KumpelBackWeb.Rooms.RoomsController do
   - conn: Plug.conn
   - %{"id" => id}
   """
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, %{"id" => id}) do
     with {:ok, %Room{} = room} <- Rooms.delete(id) do
       conn

@@ -33,6 +33,9 @@ defmodule KumpelBack.Users.User do
     timestamps()
   end
 
+  @type t :: %__MODULE__{}
+
+  @spec changeset(map()) :: Ecto.Changeset.t()
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @required_params_create ++ [:image_url])
@@ -44,6 +47,7 @@ defmodule KumpelBack.Users.User do
     |> put_password_hash()
   end
 
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(user, params) do
     user
     |> cast(params, @required_params_update ++ [:image_url])

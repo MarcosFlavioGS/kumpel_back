@@ -4,6 +4,8 @@ defmodule KumpelBack.Users.Verify do
 
   alias KumpelBack.Repo
 
+  @spec call(map()) ::
+          {:ok, User.t()} | {:error, :not_found | :unauthorized}
   def call(%{"mail" => mail, "password" => password}) do
     case get_by_email(mail) do
       {:ok, user} -> verify(user, password)

@@ -7,6 +7,10 @@ defmodule KumpelBack.Rooms.Create do
 
   @max_code_attempts 8
 
+  @spec call(map(), String.t()) ::
+          {:ok, Room.t()}
+          | {:error, Ecto.Changeset.t()}
+          | {:error, :room_code_allocation_failed}
   def call(params, user_id) do
     base =
       params

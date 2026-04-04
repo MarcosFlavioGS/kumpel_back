@@ -3,6 +3,7 @@ defmodule KumpelBackWeb.Subscription.ErrorJSON do
   Renders error jsons for subscriptions
   """
 
+  @spec error(map()) :: map()
   def error(%{status: status, message: message}) do
     %{
       status: status,

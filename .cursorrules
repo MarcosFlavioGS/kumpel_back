@@ -32,7 +32,7 @@
 - **General style**: Follow `.formatter.exs` (`mix format`). Use pipelines and `with` where the codebase already does.
 - **Credo**: Project includes Credo; avoid new complexity/unused code issues in touched files.
 - **Naming**: Domain-specific names; match existing spelling in APIs (`mail`, `adm_id`) for consistency.
-- **Specs**: Add `@spec` where it clarifies public `call` functions or non-obvious returns.
+- **Typespecs (`@spec`)**: Add `@spec` on **every public function** (including `defdelegate`, plug `init/call`, channel `@impl` callbacks, JSON/render helpers, and schema `changeset/1`–`changeset/2`). For `defp`, add a spec only when the return type or contract is non-obvious and it helps callers of related public APIs. Place `@spec` immediately above the function. Use accurate types (`String.t()`, `Ecto.Changeset.t()`, `Plug.Conn.t()`, `Phoenix.Socket.t()`, schema `ModuleName.t()`, `{:ok, _}` / `{:error, _}` unions). New code should land with specs; when touching a module, bring missing public specs in line with this rule.
 
 ### Data structures & validation
 - **Input**: Request params are maps/strings; schemas use **Ecto changesets** — not a separate PayloadStruct layer.

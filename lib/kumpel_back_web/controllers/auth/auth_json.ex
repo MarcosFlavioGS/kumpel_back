@@ -6,6 +6,7 @@ defmodule KumpelBackWeb.Auth.AuthJSON do
   @doc """
   Renders the signed token
   """
+  @spec login(map()) :: map()
   def login(%{token: token, refresh_token: refresh_token}) do
     %{
       status: "Authorized",

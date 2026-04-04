@@ -8,6 +8,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
     Receives an user struct and returns the map containing a message, the user and the room id.
     data
   """
+  @spec create(map()) :: map()
   def create(%{user: user, token: token}) do
     %{
       message: "User created !",
@@ -21,6 +22,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   get/1
   Renders a single User
   """
+  @spec get(map()) :: map()
   def get(%{user: user}) do
     %{
       id: user.id,
@@ -46,10 +48,6 @@ defmodule KumpelBackWeb.Users.UsersJSON do
     }
   end
 
-  @doc """
-  get/1
-  renders multiple Users
-  """
   def get(%{users: users}) do
     %{
       users:
@@ -82,6 +80,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   @doc """
   Renders the updated user
   """
+  @spec update(map()) :: map()
   def update(%{user: user}) do
     %{
       user_id: user.id,
@@ -109,6 +108,7 @@ defmodule KumpelBackWeb.Users.UsersJSON do
   @doc """
   Renders the deleted user
   """
+  @spec delete(map()) :: map()
   def delete(%{user: user}) do
     %{
       message: "User deleted !",

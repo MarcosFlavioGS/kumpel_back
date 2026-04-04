@@ -6,6 +6,8 @@ defmodule KumpelBack.Rooms.Update do
   alias KumpelBack.Rooms.Room
   alias KumpelBack.Repo
 
+  @spec call(map()) ::
+          {:ok, Room.t()} | {:error, :not_found} | {:error, Ecto.Changeset.t()}
   def call(%{"id" => id} = params) do
     case Repo.get(Room, id) do
       nil -> {:error, :not_found}
@@ -13,6 +15,8 @@ defmodule KumpelBack.Rooms.Update do
     end
   end
 
+  @spec update(Room.t(), map()) ::
+          {:ok, Room.t()} | {:error, Ecto.Changeset.t()}
   def update(room, params) do
     room
     |> Room.changeset(params)

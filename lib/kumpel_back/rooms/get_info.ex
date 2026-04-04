@@ -6,6 +6,8 @@ defmodule KumpelBack.Rooms.GetInfo do
   alias KumpelBack.Rooms
   alias Rooms.Room
 
+  @spec get(map()) ::
+          {:ok, Room.t() | String.t()} | {:error, String.t()}
   def get(%{"id" => id}) when id == "lobby" do
     {:ok, %Room{name: "Lobby"}}
   end

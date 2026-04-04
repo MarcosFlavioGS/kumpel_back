@@ -10,6 +10,7 @@ defmodule KumpelBack.Users.Password do
   Validates a password according to security policies.
   Returns :ok if valid, {:error, reason} if invalid.
   """
+  @spec validate(term()) :: :ok | {:error, String.t()}
   def validate(password) when is_binary(password) do
     with :ok <- check_length(password),
          :ok <- check_complexity(password),
@@ -72,6 +73,7 @@ defmodule KumpelBack.Users.Password do
   @doc """
   Generates a secure random password that meets all requirements.
   """
+  @spec generate() :: String.t()
   def generate do
     :crypto.strong_rand_bytes(16)
     |> Base.url_encode64(padding: false)

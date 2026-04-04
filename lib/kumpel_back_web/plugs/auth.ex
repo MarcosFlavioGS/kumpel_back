@@ -6,8 +6,10 @@ defmodule KumpelBackWeb.Plugs.Auth do
 
   alias KumpelBackWeb.Token
 
+  @spec init(Plug.opts()) :: Plug.opts()
   def init(opts), do: opts
 
+  @spec call(Plug.Conn.t(), Plug.opts()) :: Plug.Conn.t()
   def call(conn, _opts) do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, data} <- Token.verify(token) do

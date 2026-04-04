@@ -5,6 +5,7 @@ defmodule KumpelBackWeb.Subscription.FallbackController do
 
   use KumpelBackWeb, :controller
 
+  @spec call(Plug.Conn.t(), {:error, :already_subscribed}) :: Plug.Conn.t()
   def call(conn, {:error, :already_subscribed}) do
     conn
     |> put_status(:bad_request)
@@ -12,6 +13,7 @@ defmodule KumpelBackWeb.Subscription.FallbackController do
     |> render(:error, %{status: :bad_request, message: "User is already subscribed to the room"})
   end
 
+  @spec call(Plug.Conn.t(), {:error, String.t()}) :: Plug.Conn.t()
   def call(conn, {:error, message}) do
     conn
     |> put_status(:not_found)

@@ -10,6 +10,7 @@ defmodule KumpelBack.Users.Get do
   @doc """
   	Retrieves an User
   """
+  @spec call(String.t()) :: {:ok, User.t()} | {:error, :not_found}
   def call(id) do
     query =
       from u in User,

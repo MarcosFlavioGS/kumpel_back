@@ -11,6 +11,7 @@ defmodule KumpelBack.Rooms.Get do
     call/1 Receives a room id and returns the room
     returns nill if non room is found
   """
+  @spec call(String.t()) :: {:ok, Room.t()} | {:error, :not_found}
   def call(id) do
     query =
       from r in Room,

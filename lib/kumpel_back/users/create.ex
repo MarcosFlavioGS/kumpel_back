@@ -10,6 +10,7 @@ defmodule KumpelBack.Users.Create do
   @doc """
   	Creates an user
   """
+  @spec call(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def call(params) do
     changeset = User.changeset(params)
 

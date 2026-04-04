@@ -6,6 +6,13 @@ defmodule KumpelBack.Rooms.Authorize do
   alias KumpelBack.Rooms
   alias Rooms.Room
 
+  @spec authorized() :: {:error, String.t()}
+  def authorized(), do: {:error, "Room id and code not provided"}
+
+  @spec authorized(String.t()) :: {:ok, String.t()} | {:error, String.t()}
+  def authorized("lobby"), do: {:ok, "Welcome to lobby"}
+
+  @spec authorized(String.t(), map()) :: {:ok, String.t()} | {:error, String.t()}
   def authorized(room_id, %{"code" => code}) do
     with {:ok, %Room{code: room_code}} <- Rooms.get(room_id), true <- room_code == code do
       {:ok, "Welcome to chat"}
@@ -17,6 +24,4 @@ defmodule KumpelBack.Rooms.Authorize do
   end
 
   def authorized(_room_id, %{}), do: {:error, "Invalid or empty code"}
-  def authorized("lobby"), do: {:ok, "Welcome to lobby"}
-  def authorized(), do: {:error, "Room id and code not provided"}
 end

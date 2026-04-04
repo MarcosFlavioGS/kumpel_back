@@ -16,23 +16,20 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     This endpoint checks for an existing room on the DB and return the socket if the provided code is valid.
   """
   @impl true
+  @spec join(String.t(), map(), Phoenix.Socket.t()) ::
+          {:ok, Phoenix.Socket.t()} | {:error, %{reason: String.t()}}
   def join("chat_room:lobby", _payload, socket) do
     case check_connection_limit("lobby") do
       :ok ->
-        case Authorize.authorized("lobby") do
-          {:ok, _message} ->
-            Logger.log_room_access(
-              "lobby",
-              true,
-              "Successfully joined lobby"
-            )
+        {:ok, _message} = Authorize.authorized("lobby")
 
-            {:ok, socket}
+        Logger.log_room_access(
+          "lobby",
+          true,
+          "Successfully joined lobby"
+        )
 
-          {:error, message} ->
-            Logger.log_room_access("lobby", false, message)
-            {:error, %{reason: message}}
-        end
+        {:ok, socket}
 
       :error ->
         Logger.log_room_access(socket.assigns.user_id, false, "Room is full")
@@ -73,6 +70,8 @@ defmodule KumpelBackWeb.ChatRoomChannel do
     new_message - Handles new messages
   """
   @impl true
+  @spec handle_in(String.t(), map(), Phoenix.Socket.t()) ::
+          {:reply, term(), Phoenix.Socket.t()} | {:noreply, Phoenix.Socket.t()}
   def handle_in("ping", payload, socket) do
     with {:ok, room_id} <- GetInfo.get(payload) do
       {:reply, {:ok, room_id}, socket}

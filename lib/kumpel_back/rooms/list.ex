@@ -9,6 +9,7 @@ defmodule KumpelBack.Rooms.List do
   @doc """
   Lists all Rooms in DB.
   """
+  @spec call() :: {:ok, [Room.t()]} | {:error, :not_found}
   def call() do
     case Repo.all(Room) do
       [] -> {:error, :not_found}

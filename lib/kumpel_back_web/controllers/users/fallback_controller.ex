@@ -6,6 +6,7 @@ defmodule KumpelBackWeb.Users.FallbackController do
   """
   use KumpelBackWeb, :controller
 
+  @spec call(Plug.Conn.t(), {:error, :not_found}) :: Plug.Conn.t()
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
@@ -13,6 +14,7 @@ defmodule KumpelBackWeb.Users.FallbackController do
     |> render(:error, status: :not_found)
   end
 
+  @spec call(Plug.Conn.t(), {:error, Ecto.Changeset.t()}) :: Plug.Conn.t()
   def call(conn, {:error, changeset}) do
     conn
     |> put_status(:bad_request)

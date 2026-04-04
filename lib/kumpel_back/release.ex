@@ -5,6 +5,7 @@ defmodule KumpelBack.Release do
   """
   @app :kumpel_back
 
+  @spec migrate() :: [{:ok, term(), term()}]
   def migrate do
     load_app()
 
@@ -13,6 +14,7 @@ defmodule KumpelBack.Release do
     end
   end
 
+  @spec rollback(module(), integer()) :: {:ok, term(), term()}
   def rollback(repo, version) do
     load_app()
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))

@@ -8,6 +8,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a security event with relevant details.
   """
+  @spec log_security_event(String.t(), String.t(), map()) :: :ok
   def log_security_event(event_type, user_id, details) do
     timestamp = DateTime.utc_now() |> DateTime.to_iso8601()
     ip = get_ip_address()
@@ -29,6 +30,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a failed login attempt.
   """
+  @spec log_failed_login(String.t(), String.t()) :: :ok
   def log_failed_login(user_id, reason) do
     log_security_event("failed_login", user_id, %{
       reason: reason,
@@ -39,6 +41,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a successful login.
   """
+  @spec log_successful_login(String.t()) :: :ok
   def log_successful_login(user_id) do
     log_security_event("successful_login", user_id, %{
       timestamp: DateTime.utc_now() |> DateTime.to_iso8601()
@@ -48,6 +51,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a room access attempt.
   """
+  @spec log_room_access(String.t(), boolean(), String.t()) :: :ok
   def log_room_access(room_id, success, reason) do
     log_security_event("room_access", "", %{
       room_id: room_id,
@@ -60,6 +64,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a user creation.
   """
+  @spec log_user_creation(String.t(), String.t()) :: :ok
   def log_user_creation(user_id, created_by) do
     log_security_event("user_creation", user_id, %{
       created_by: created_by,
@@ -70,6 +75,7 @@ defmodule KumpelBack.Audit.Logger do
   @doc """
   Logs a user deletion.
   """
+  @spec log_user_deletion(String.t(), String.t()) :: :ok
   def log_user_deletion(user_id, deleted_by) do
     log_security_event("user_deletion", user_id, %{
       deleted_by: deleted_by,

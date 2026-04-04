@@ -9,6 +9,8 @@ defmodule KumpelBack.Users.Delete do
   @doc """
     call/1 Receives an user id from the controller.
   """
+  @spec call(String.t()) ::
+          {:ok, User.t()} | {:error, :not_found} | {:error, Ecto.Changeset.t()}
   def call(id) do
     case Repo.get(User, id) do
       nil ->

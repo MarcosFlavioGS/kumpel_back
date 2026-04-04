@@ -7,6 +7,7 @@ defmodule KumpelBack.Subscription.Subscribe do
   alias KumpelBack.Rooms.Room
   import Ecto.Query
 
+  @spec call(map(), map()) :: {:ok, String.t()} | {:error, String.t()}
   def call(user, params) do
     with {:ok, user} <- get_user(user),
          {:ok, room} <- get_room_by_code_and_name(params["code"], params["name"]),

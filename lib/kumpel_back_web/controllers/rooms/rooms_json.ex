@@ -6,6 +6,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
   @doc """
   Renders the created room
   """
+  @spec create(map()) :: map()
   def create(%{room: room}) do
     %{
       message: "Room created !",
@@ -17,6 +18,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
   @doc """
   Renders the updated room
   """
+  @spec update(map()) :: map()
   def update(%{room: room}) do
     %{
       message: "Room updated !",
@@ -43,6 +45,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
   get/1
   Renders a single Room
   """
+  @spec get(map()) :: map() | [map()]
   def get(%{room: room}) do
     %{
       id: room.id,
@@ -64,9 +67,6 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
     }
   end
 
-  @doc """
-  renders multiple Rooms
-  """
   def get(%{rooms: rooms}) do
     Enum.map(rooms, fn room ->
       %{
@@ -93,6 +93,7 @@ defmodule KumpelBackWeb.Rooms.RoomsJSON do
   @doc """
   Renders the deleted room
   """
+  @spec delete(map()) :: map()
   def delete(%{room: room}) do
     %{
       message: "Room deleted",

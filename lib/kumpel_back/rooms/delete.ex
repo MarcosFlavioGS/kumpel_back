@@ -9,6 +9,8 @@ defmodule KumpelBack.Rooms.Delete do
   @doc """
   Deletes a Room
   """
+  @spec call(String.t()) ::
+          {:ok, Room.t()} | {:error, :not_found} | {:error, Ecto.Changeset.t()}
   def call(id) do
     case Repo.get(Room, id) do
       nil -> {:error, :not_found}

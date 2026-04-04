@@ -21,6 +21,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   - params: %User{}
   end
   """
+  @spec create(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def create(conn, params) do
     with {:ok, %User{} = user} <- Users.create(params) do
       token = Token.sign(user)
@@ -40,6 +41,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   - conn: Plug.conn
   - %{"id" => id, ..params}
   """
+  @spec update(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def update(conn, params) do
     with {:ok, %User{} = user} <- Users.update(params) do
       conn
@@ -55,6 +57,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   - conn: Plug.conn
   - %{"id" => id}
   """
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- Users.get(id) do
       conn
@@ -70,6 +73,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   - conn: Plug.conn
   - _params
   """
+  @spec current(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def current(conn, _params) do
     with {:ok, %User{} = user} <- Users.get(conn.assigns.user_id.user_id) do
       conn
@@ -84,6 +88,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   params:
   - conn: Plug.conn
   """
+  @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _) do
     with {:ok, users} <- Users.list() do
       conn
@@ -99,6 +104,7 @@ defmodule KumpelBackWeb.Users.UsersController do
   - conn: Plug.conn
   - %{"id" => id}
   """
+  @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, %{"id" => id}) do
     with {:ok, %User{} = user} <- Users.delete(id) do
       conn

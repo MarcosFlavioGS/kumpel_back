@@ -5,6 +5,7 @@ defmodule KumpelBack.Users.List do
   alias KumpelBack.Users.User
   alias KumpelBack.Repo
 
+  @spec call() :: {:ok, [User.t()]} | {:error, :not_found}
   def call() do
     query =
       from u in User,
