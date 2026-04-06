@@ -26,7 +26,22 @@ defmodule KumpelBackWeb.Auth.ErrorJSON do
     }
   end
 
-  # login
+  # login (no custom message)
+  def error(%{status: :bad_request, message: message}) do
+    %{
+      status: :bad_request,
+      message: message
+    }
+  end
+
+  # refresh invalid token, etc. (must be before %{status: :unauthorized} alone)
+  def error(%{status: :unauthorized, message: message}) do
+    %{
+      status: :unauthorized,
+      message: message
+    }
+  end
+
   def error(%{status: :unauthorized}) do
     %{
       status: :unauthorized,

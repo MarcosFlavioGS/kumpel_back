@@ -14,4 +14,12 @@ defmodule KumpelBackWeb.Auth.AuthJSON do
       refresh: refresh_token
     }
   end
+
+  @spec refresh(map()) :: map()
+  def refresh(%{token: token, refresh_token: refresh_token}) do
+    %{
+      token: token,
+      refresh: refresh_token
+    }
+  end
 end

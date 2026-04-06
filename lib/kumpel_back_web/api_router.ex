@@ -27,6 +27,7 @@ defmodule KumpelBackWeb.ApiRouter do
     resources "/users", Users.UsersController, only: [:create, :show, :index]
 
     post "/auth/login", Auth.AuthController, :login
+    post "/auth/refresh", Auth.AuthController, :refresh
   end
 
   # Authenticated API — Bearer access token

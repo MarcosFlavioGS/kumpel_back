@@ -15,6 +15,13 @@ defmodule KumpelBackWeb.Auth.AuthControllerTest do
     |> post(~p"/api/auth/login", TestFixtures.json_body(params))
   end
 
+  defp post_refresh(conn, params) do
+    conn
+    |> put_req_header("content-type", "application/json")
+    |> put_req_header("accept", "application/json")
+    |> post(~p"/api/auth/refresh", TestFixtures.json_body(params))
+  end
+
   describe "login/2" do
     test "returns tokens for valid credentials" do
       attrs = TestFixtures.user_attrs()
@@ -58,6 +65,49 @@ defmodule KumpelBackWeb.Auth.AuthControllerTest do
 
       conn = post_login(build_conn(), %{"mail" => mail, "password" => "WrongPass1!"})
       assert conn.status == 429
+    end
+  end
+
+  describe "refresh/2" do
+    test "returns new access and refresh tokens for a valid refresh token" do
+      attrs = TestFixtures.user_attrs()
+      assert {:ok, _} = KumpelBack.Users.create(attrs)
+
+      conn = post_login(build_conn(), %{"mail" => attrs["mail"], "password" => attrs["password"]})
+      login_body = json_response(conn, 200)
+      refresh = login_body["refresh"]
+
+      conn = post_refresh(build_conn(), %{"refresh" => refresh})
+      body = json_response(conn, 200)
+
+      assert body["status"] == "Authorized"
+      assert is_binary(body["token"])
+      assert is_binary(body["refresh"])
+      assert body["token"] != login_body["token"]
+      assert body["refresh"] != refresh
+    end
+
+    test "returns 400 when refresh is missing" do
+      conn = post_refresh(build_conn(), %{})
+      assert json_response(conn, 400)
+    end
+
+    test "returns 401 for invalid refresh token" do
+      conn = post_refresh(build_conn(), %{"refresh" => "not-a-valid-token"})
+      assert json_response(conn, 401)
+    end
+
+    test "returns 404 when user no longer exists" do
+      attrs = TestFixtures.user_attrs()
+      assert {:ok, user} = KumpelBack.Users.create(attrs)
+
+      conn = post_login(build_conn(), %{"mail" => attrs["mail"], "password" => attrs["password"]})
+      refresh = json_response(conn, 200)["refresh"]
+
+      assert {:ok, _} = KumpelBack.Users.delete(user.id)
+
+      conn = post_refresh(build_conn(), %{"refresh" => refresh})
+      assert json_response(conn, 404)
     end
   end
 

@@ -50,6 +50,54 @@ defmodule KumpelBackWeb.Auth.AuthController do
     end
   end
 
+  @doc """
+  Exchanges a valid refresh token for a new access token and refresh token.
+
+  JSON body: `%{"refresh" => "<refresh_token>"}` (same key as in the login response).
+  """
+  @spec refresh(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def refresh(conn, params) do
+    with {:ok, refresh} <- fetch_refresh_param(params),
+         {:ok, claims} <- verify_refresh_token(refresh),
+         {:ok, %User{} = user} <- Users.get(claims.user_id),
+         :ok <- verify_mail_match(user, claims) do
+      token = Token.sign(user)
+      refresh_token = Token.sign_refresh(user)
+
+      conn
+      |> put_status(:ok)
+      |> render(:refresh, %{token: token, refresh_token: refresh_token})
+    end
+  end
+
+  @spec fetch_refresh_param(map()) :: {:ok, String.t()} | {:error, :missing_refresh}
+  defp fetch_refresh_param(%{"refresh" => refresh}) when is_binary(refresh) do
+    if String.trim(refresh) == "" do
+      {:error, :missing_refresh}
+    else
+      {:ok, refresh}
+    end
+  end
+
+  defp fetch_refresh_param(_), do: {:error, :missing_refresh}
+
+  @spec verify_refresh_token(String.t()) :: {:ok, Token.claims()} | {:error, :invalid_refresh}
+  defp verify_refresh_token(token) do
+    case Token.verify_refresh(token) do
+      {:ok, claims} -> {:ok, claims}
+      _ -> {:error, :invalid_refresh}
+    end
+  end
+
+  @spec verify_mail_match(User.t(), Token.claims()) :: :ok | {:error, :unauthorized}
+  defp verify_mail_match(%User{mail: mail}, claims) do
+    if claims.user_mail == mail do
+      :ok
+    else
+      {:error, :unauthorized}
+    end
+  end
+
   defp check_rate_limit(email) do
     key = "login_attempts:#{email}"
     attempts = get_attempts(key)

@@ -21,4 +21,20 @@ defmodule KumpelBackWeb.Auth.FallbackController do
     |> put_view(json: KumpelBackWeb.Auth.ErrorJSON)
     |> render(:error, status: :unauthorized)
   end
+
+  @spec call(Plug.Conn.t(), {:error, :missing_refresh}) :: Plug.Conn.t()
+  def call(conn, {:error, :missing_refresh}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(json: KumpelBackWeb.Auth.ErrorJSON)
+    |> render(:error, status: :bad_request, message: "Missing or empty refresh token")
+  end
+
+  @spec call(Plug.Conn.t(), {:error, :invalid_refresh}) :: Plug.Conn.t()
+  def call(conn, {:error, :invalid_refresh}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: KumpelBackWeb.Auth.ErrorJSON)
+    |> render(:error, status: :unauthorized, message: "Invalid or expired refresh token")
+  end
 end
