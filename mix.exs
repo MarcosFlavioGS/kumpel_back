@@ -5,7 +5,7 @@ defmodule KumpelBack.MixProject do
     [
       app: :kumpel_back,
       version: "1.1.0",
-      elixir: "~> 1.18.4",
+      elixir: "~> 1.19.4",
       docs: [
         output: "docs"
       ],

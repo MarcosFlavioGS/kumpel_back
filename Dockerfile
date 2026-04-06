@@ -12,7 +12,7 @@
 #   - Must match mix.exs `elixir:` and ideally .tool-versions (OTP for release ERTS).
 #   - Ex: hexpm/elixir:1.18.4-erlang-28.3.1-debian-bookworm-20260202-slim
 #
-ARG ELIXIR_VERSION=1.18.4
+ARG ELIXIR_VERSION=1.19.4
 ARG OTP_VERSION=28.3.1
 ARG DEBIAN_VERSION=bookworm-20260202-slim
 
