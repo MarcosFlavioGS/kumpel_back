@@ -25,12 +25,13 @@ defmodule KumpelBackWeb.Users.UsersController do
   def create(conn, params) do
     with {:ok, %User{} = user} <- Users.create(params) do
       token = Token.sign(user)
+      refresh_token = Token.sign_refresh(user)
 
       Logger.log_successful_login(user.id)
 
       conn
       |> put_status(:created)
-      |> render(:create, %{user: user, token: token})
+      |> render(:create, %{user: user, token: token, refresh_token: refresh_token})
     end
   end
 

@@ -9,12 +9,13 @@ defmodule KumpelBackWeb.Users.UsersJSON do
     data
   """
   @spec create(map()) :: map()
-  def create(%{user: user, token: token}) do
+  def create(%{user: user, token: token, refresh_token: refresh_token}) do
     %{
       message: "User created !",
       id: user.id,
       data: user,
-      token: token
+      token: token,
+      refresh: refresh_token
     }
   end
 

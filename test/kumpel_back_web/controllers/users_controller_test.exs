@@ -21,6 +21,7 @@ defmodule KumpelBackWeb.Users.UsersControllerTest do
       assert body["message"] == "User created !"
       assert body["data"]["mail"] == attrs["mail"]
       assert is_binary(body["token"])
+      assert is_binary(body["refresh"])
     end
 
     test "returns 400 for invalid params" do
