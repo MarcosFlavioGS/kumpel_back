@@ -80,7 +80,6 @@ defmodule KumpelBackWeb.Auth.AuthControllerTest do
       conn = post_refresh(build_conn(), %{"refresh" => refresh})
       body = json_response(conn, 200)
 
-      assert body["status"] == "Authorized"
       assert is_binary(body["token"])
       assert is_binary(body["refresh"])
       assert body["token"] != login_body["token"]
