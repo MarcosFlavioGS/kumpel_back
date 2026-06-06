@@ -7,6 +7,8 @@ defmodule KumpelBackWeb.ChatRoomChannel do
   alias KumpelBack.Rooms.Authorize
   alias KumpelBack.Rooms.GetInfo
   alias KumpelBack.Audit.Logger
+  alias KumpelBack.Messages
+  alias KumpelBackWeb.Messages.MessagesJSON
 
   @max_message_length 1000
   @max_messages_per_minute 200
@@ -49,7 +51,9 @@ defmodule KumpelBackWeb.ChatRoomChannel do
               "Successfully joined room"
             )
 
-            {:ok, socket}
+            {:ok, messages, has_more} = Messages.list_by_room(room_id)
+            history = Enum.map(messages, &MessagesJSON.serialize/1)
+            {:ok, %{history: history, has_more: has_more}, socket}
 
           {:error, message} ->
             Logger.log_room_access(room_id, false, message)
@@ -103,12 +107,17 @@ defmodule KumpelBackWeb.ChatRoomChannel do
       :ok ->
         case check_rate_limit(socket) do
           :ok ->
+            sanitized_body = sanitize_message(body)
+            sanitized_user = sanitize_message(user)
+            sanitized_color = sanitize_message(color)
+
             sanitized_message = %{
-              body: sanitize_message(body),
-              user: sanitize_message(user),
-              color: sanitize_message(color)
+              body: sanitized_body,
+              user: sanitized_user,
+              color: sanitized_color
             }
 
+            maybe_persist_message(socket.topic, sanitized_body, sanitized_user, sanitized_color)
             broadcast!(socket, "new_message", sanitized_message)
             {:noreply, socket}
 
@@ -118,6 +127,15 @@ defmodule KumpelBackWeb.ChatRoomChannel do
 
       :error ->
         {:reply, {:error, %{reason: "Invalid message"}}, socket}
+    end
+  end
+
+  defp maybe_persist_message("chat_room:lobby", _body, _user, _color), do: :ok
+
+  defp maybe_persist_message("chat_room:" <> room_id, body, user_name, color) do
+    case Messages.create(%{body: body, user_name: user_name, color: color, room_id: room_id}) do
+      {:ok, _} -> :ok
+      {:error, reason} -> :logger.warning(~c"Failed to persist message: ~p", [reason])
     end
   end
 

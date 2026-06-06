@@ -24,6 +24,7 @@ defmodule KumpelBackWeb.ApiRouter do
     get "/health", Health.HealthController, :index
 
     resources "/rooms", Rooms.RoomsController, only: [:show, :index]
+    get "/rooms/:room_id/messages", Messages.MessagesController, :index
     resources "/users", Users.UsersController, only: [:create, :show, :index]
 
     post "/auth/login", Auth.AuthController, :login

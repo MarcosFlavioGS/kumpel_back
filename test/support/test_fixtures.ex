@@ -64,6 +64,40 @@ defmodule KumpelBack.TestFixtures do
   end
 
   @doc """
+  Inserts a chat message for a given room.
+
+  After the regular insert (which uses Ecto autogenerate for `inserted_at`), immediately
+  updates the timestamp to an explicit value derived from a monotonically increasing counter.
+  This guarantees distinct, correctly ordered timestamps across multiple calls within the
+  same test even when the wall clock doesn't advance.
+  """
+  def insert_message!(room_id, attrs \\ %{}) do
+    import Ecto.Query, only: [from: 2]
+    alias KumpelBack.Messages.Message
+
+    n = System.unique_integer([:positive])
+    # Monotonic integer as second offset from a fixed base — survives DB second-level truncation
+    offset_s = System.unique_integer([:positive, :monotonic])
+    inserted_at = Map.get(attrs, :inserted_at, DateTime.add(~U[2020-01-01 00:00:00Z], offset_s, :second))
+
+    params = %{
+      body: Map.get(attrs, :body, "Message #{n}"),
+      user_name: Map.get(attrs, :user_name, "TestUser"),
+      color: Map.get(attrs, :color, "#FF5733"),
+      room_id: room_id
+    }
+
+    {:ok, msg} = KumpelBack.Messages.create(params)
+
+    Repo.update_all(
+      from(m in Message, where: m.id == ^msg.id),
+      set: [inserted_at: inserted_at]
+    )
+
+    Repo.get!(Message, msg.id)
+  end
+
+  @doc """
   Encodes params as JSON request body.
   """
   def json_body(params) do
